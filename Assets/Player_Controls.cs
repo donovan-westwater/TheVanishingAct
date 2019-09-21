@@ -40,20 +40,20 @@ public class Player_Controls : MonoBehaviour
         rb2d.MovePosition(rb2d.transform.position + tempVect);
         //Shooting / aiming
         Vector3 mouseVect = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x - transform.position.x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y);
-        Vector3 currentDir = new Vector3(aim_sprite.transform.position.x, aim_sprite.transform.position.y);
+        Vector3 currentDir = new Vector3(aim_sprite.transform.position.x-transform.position.x, aim_sprite.transform.position.y - transform.position.y);
         float angleTemp = Mathf.Acos(Vector3.Dot(currentDir, mouseVect) / (currentDir.magnitude * mouseVect.magnitude));
-        if(Vector3.Cross(mouseVect.normalized,currentDir.normalized).z < 0 && angleTemp > 0.2f)
+        if(Vector3.Cross(mouseVect.normalized,currentDir.normalized).z < 0 && angleTemp > Mathf.Abs(0.01f))
         {
             angle -= 0.1f;
-            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -0.1f);
+            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), 0.1f); //-0.1f
         }
-        else if(Vector3.Cross(mouseVect.normalized, currentDir.normalized).z > 0 && angleTemp > 0.2f)
+        else if(Vector3.Cross(mouseVect.normalized, currentDir.normalized).z > 0 && angleTemp > Mathf.Abs(0.01f)) 
         {
             angle += 0.1f;
-            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), 0.1f);
+            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -0.1f); //-0.1f
         }
-        
-        print("Cross: " + Vector3.Cross(mouseVect.normalized, currentDir.normalized).z);
+        print("Angle: " + angleTemp);
+        //print("Cross: " + Vector3.Cross(mouseVect.normalized, currentDir.normalized).z);
         Debug.DrawLine(aim_sprite.transform.position, transform.position,Color.blue);
         Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position, Color.blue);
 
