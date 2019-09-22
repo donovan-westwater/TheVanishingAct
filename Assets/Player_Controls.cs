@@ -6,6 +6,7 @@ public class Player_Controls : MonoBehaviour
 {
     public float speed;
     public GameObject aim_sprite;
+    public  string[] inventory = new string[3];
     private Rigidbody2D rb2d;
     private Vector3 movement = new Vector3(0,0,0);
     private float vertical = 0f;
@@ -22,7 +23,26 @@ public class Player_Controls : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         
     }
-
+    public Vector3 grabSpellAim()
+    {
+        return new Vector3(aim_sprite.transform.position.x - transform.position.x, aim_sprite.transform.position.y - transform.position.y);
+    }
+    //adds an item to inventory
+    public void addItem(string name,int index)
+    {
+        inventory[index] = name;
+    }
+    //Removes an item from the players inventory
+    public void removeItem(string name)
+    {
+        for(int n = 0; n < inventory.Length;n++)
+        {
+            if (inventory[n].Equals(name))
+            {
+                inventory[n] = null;
+            }
+        }
+    }
     // Update is called once per frame
     //Change to be based on force
     void Update()
@@ -59,5 +79,9 @@ public class Player_Controls : MonoBehaviour
 
         //print(aim_sprite.transform.position.x - transform.position.x);
         //aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), angleTemp);
+    }
+    public string[] getInventory()
+    {
+        return inventory;
     }
 }
