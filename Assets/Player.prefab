@@ -192,6 +192,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   aim_sprite: {fileID: 8593069102504072810}
+  inventory:
+  - 
+  - 
+  - 
+  teleStor: {fileID: 2493668263793789875, guid: e98ab6526a9013d4cbd4ae92006efcdb,
+    type: 3}
 --- !u!50 &8593069103426729788
 Rigidbody2D:
   serializedVersion: 4

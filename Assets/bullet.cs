@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Valuables : MonoBehaviour
+public class bullet : MonoBehaviour
 {
-    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player");    
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-               
+        
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("pellet"))
+        print("Will it hit?");
+        if (!col.gameObject.CompareTag("Glass"))
         {
-            print("object: I HAVE BEEN HIT!");
+            print("Pellet: I HAVE BEEN HIT!");
         }
     }
 }

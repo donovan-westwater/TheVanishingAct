@@ -55,4 +55,13 @@ public class Wall : MonoBehaviour
             transform.position = ogPos;
         }
     }
+    //Bullets need to die when they colldie
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        print("Will it hit?");
+        if (col.gameObject.CompareTag("pellet"))
+        {
+            print("Wall: I HAVE BEEN HIT!");
+        }
+    }
 }

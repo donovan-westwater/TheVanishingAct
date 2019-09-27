@@ -7,15 +7,18 @@ public class Player_Controls : MonoBehaviour
     public float speed;
     public GameObject aim_sprite;
     public  string[] inventory = new string[3];
+    public GameObject teleStor;
     private Rigidbody2D rb2d;
     private Vector3 movement = new Vector3(0,0,0);
     private float vertical = 0f;
     private float horizontal = 0f;
     private float angle;
+    private int curInvSize;
     private Vector3 baseDir = new Vector3(1, 0, 0);
     // Start is called before the first frame update
     void Start()
     {
+        curInvSize = 0;
         aim_sprite = gameObject.transform.GetChild(0).gameObject;
         Vector3 startVect = new Vector3(aim_sprite.transform.position.x -transform.position.x, aim_sprite.transform.position.y-transform.position.y).normalized;
         angle = Mathf.Acos(Vector3.Dot(startVect, baseDir) / (startVect.magnitude * baseDir.magnitude));
@@ -72,16 +75,60 @@ public class Player_Controls : MonoBehaviour
             angle += 0.1f;
             aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -0.1f); //-0.1f
         }
-        print("Angle: " + angleTemp);
+        //print("Angle: " + angleTemp);
         //print("Cross: " + Vector3.Cross(mouseVect.normalized, currentDir.normalized).z);
         Debug.DrawLine(aim_sprite.transform.position, transform.position,Color.blue);
         Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position, Color.blue);
 
         //print(aim_sprite.transform.position.x - transform.position.x);
         //aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), angleTemp);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            fireSpell();
+            //GameObject tele = Instantiate(teleStor, transform.position, aim_sprite.transform.rotation);
+            //tele.transform.position = Vector2.MoveTowards(tele.transform.position, aim_sprite.transform.position, 50);
+            //tele.GetComponent<Rigidbody2D>().AddForce(100 * (aim_sprite.transform.position - transform.position));
+        }
     }
     public string[] getInventory()
     {
         return inventory;
+    }
+    public void fireSpell()
+    {
+        //new Vector3(transform.position.x - aim_sprite.transform.position.x, transform.position.y - aim_sprite.transform.position.y,transform.position.z)
+        Vector3 dir = grabSpellAim();
+        RaycastHit2D spell = Physics2D.Raycast(transform.position,dir,10f);
+        if (!spell)
+        {
+            print("I hit nothing");
+            return;
+        }
+        if (spell.collider.name.Equals("Object"))
+        {
+            print("I hit object");
+            curInvSize += 1;
+            if(curInvSize < inventory.Length)
+            {
+                addItem("Object", curInvSize - 1);
+                spell.collider.gameObject.SetActive(false);
+            }
+            else
+            {
+                print("Inventory Full!");
+            }
+        }
+        else if (spell.collider.CompareTag("Wall"))
+        {
+            print("I hit a wall");
+        }
+        
+        //print(spell.collider.name);
+        //   RaycastHit2D hit;
+        //print(dir.x + " " + dir.y);
+        print(spell.point);
+        Debug.DrawLine(transform.position, spell.point, Color.black, 2f);
+
+        
     }
 }
