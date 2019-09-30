@@ -8,15 +8,18 @@ public class BasicAi : MonoBehaviour
     public Transform targetPosition;
 
     private Seeker seeker;
-    
+
 
     public Path path;
 
     public float speed = 2;
 
-    public float nextWaypointDistance = 3;
+    public float nextWaypointDistance = 0; //3
 
     private int currentWaypoint = 0;
+
+    public float repathRate = 0.5f;
+    private float lastRepath = float.NegativeInfinity;
 
     public bool reachedEndOfPath;
 
@@ -35,16 +38,35 @@ public class BasicAi : MonoBehaviour
     {
         Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
 
+        // Path pooling. To avoid unnecessary allocations paths are reference counted.
+        // Calling Claim will increase the reference count by 1 and Release will reduce
+        // it by one, when it reaches zero the path will be pooled and then it may be used
+        // by other scripts. The ABPath.Construct and Seeker.StartPath methods will
+        // take a path from the pool if possible. See also the documentation page about path pooling.
+        p.Claim(this);
         if (!p.error)
         {
+            if (path != null) path.Release(this);
             path = p;
             // Reset the waypoint counter so that we start to move towards the first point in the path
             currentWaypoint = 0;
+        }
+        else
+        {
+            p.Release(this);
         }
     }
 
     public void Update()
     {
+        if (Time.time > lastRepath + repathRate && seeker.IsDone())
+        {
+            lastRepath = Time.time;
+
+            // Start a new path to the targetPosition, call the the OnPathComplete function
+            // when the path has been calculated (which may take a few frames depending on the complexity)
+            seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+        }
         if (path == null)
         {
             // We have no path to follow yet, so don't do anything
@@ -57,17 +79,21 @@ public class BasicAi : MonoBehaviour
         reachedEndOfPath = false;
         // The distance to the next waypoint in the path
         float distanceToWaypoint;
+        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint],Color.red);
         while (true)
         {
             // If you want maximum performance you can check the squared distance instead to get rid of a
             // square root calculation. But that is outside the scope of this tutorial.
             distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
+            print("Current Distance: " + distanceToWaypoint);
+            print("NextDistnace: " + nextWaypointDistance);
             if (distanceToWaypoint < nextWaypointDistance)
             {
                 // Check if there is another waypoint or if we have reached the end of the path
                 if (currentWaypoint + 1 < path.vectorPath.Count)
                 {
                     currentWaypoint++;
+                    
                 }
                 else
                 {
@@ -93,9 +119,20 @@ public class BasicAi : MonoBehaviour
         // Multiply the direction by our desired speed to get a velocity
         Vector3 velocity = dir * speed * speedFactor;
 
-        
+
 
         // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
-         transform.position += velocity * Time.deltaTime;
+        //transform.position += velocity * Time.deltaTime;
+        transform.Translate(velocity * Time.deltaTime);
+    }
+   void FixedUpdate()
+    {
+        Bounds playerB;
+        Bounds aiB;
+        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
+        aiB = GetComponent<Collider2D>().bounds;
+
+        AstarPath.active.UpdateGraphs(playerB);
+        AstarPath.active.UpdateGraphs(aiB);
     }
 }
