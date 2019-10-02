@@ -5,11 +5,20 @@ using Pathfinding;
 
 public class BasicAi : MonoBehaviour
 {
-    public Transform targetPosition;
-
+    public Transform playerPosition;
+    //Patrol system
+    public Transform[] targets;
+    int curIndex = 0;
+    int start = 0;
+    int end;
+    int direction = 1;
     private Seeker seeker;
-
-
+    enum basicStates{
+        patrol=0,
+        chase=1,
+        attack=2
+    }
+    basicStates curState = basicStates.patrol;
     public Path path;
 
     public float speed = 2;
@@ -26,12 +35,11 @@ public class BasicAi : MonoBehaviour
     public void Start()
     {
         seeker = GetComponent<Seeker>();
-        
-        
-
-        // Start a new path to the targetPosition, call the the OnPathComplete function
+        playerPosition = GameObject.Find("Player").transform;
+        end = targets.Length-1;
+        // Start a new path to the playerPosition, call the the OnPathComplete function
         // when the path has been calculated (which may take a few frames depending on the complexity)
-        seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+        //seeker.StartPath(transform.position, targets[0].position, OnPathComplete);
     }
 
     public void OnPathComplete(Path p)
@@ -59,13 +67,63 @@ public class BasicAi : MonoBehaviour
 
     public void Update()
     {
+        
+        
+        print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
+        //Patrol system needs work!
+        if(curState == basicStates.patrol)
+        {
+            moveAI(targets[curIndex]);
+            if (Vector2.Distance(this.transform.position, targets[curIndex].position) < 2)
+            {
+                curIndex += direction;
+                print("Current index: " + curIndex);
+
+            }
+            if((curIndex > end && direction > 0) || (curIndex < end && direction < 0))
+                {
+                    curIndex = start;
+                    start = end;
+                    end = curIndex;
+                    curIndex = start-direction;
+                    direction = -direction;
+                }
+            if (Vector2.Distance(playerPosition.position, this.transform.position) < 10)
+            {
+                curState = basicStates.chase;
+            }
+            //moveAI(targets[index]);
+            
+        }
+        else if (curState == basicStates.chase)
+        {
+            moveAI(playerPosition);
+            if (Vector2.Distance(playerPosition.position, this.transform.position) > 10)
+            {
+                curState = basicStates.patrol;
+            }
+        }
+        //moveAI(playerPosition);
+    }
+   void FixedUpdate()
+    {
+        Bounds playerB;
+        Bounds aiB;
+        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
+        aiB = GetComponent<Collider2D>().bounds;
+
+        AstarPath.active.UpdateGraphs(playerB);
+        AstarPath.active.UpdateGraphs(aiB);
+    }
+    void moveAI(Transform target)
+    {
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
             lastRepath = Time.time;
 
-            // Start a new path to the targetPosition, call the the OnPathComplete function
+            // Start a new path to the playerPosition, call the the OnPathComplete function
             // when the path has been calculated (which may take a few frames depending on the complexity)
-            seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+            seeker.StartPath(transform.position, target.position, OnPathComplete);
         }
         if (path == null)
         {
@@ -79,21 +137,21 @@ public class BasicAi : MonoBehaviour
         reachedEndOfPath = false;
         // The distance to the next waypoint in the path
         float distanceToWaypoint;
-        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint],Color.red);
+        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint], Color.red);
         while (true)
         {
             // If you want maximum performance you can check the squared distance instead to get rid of a
             // square root calculation. But that is outside the scope of this tutorial.
             distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
-            print("Current Distance: " + distanceToWaypoint);
-            print("NextDistnace: " + nextWaypointDistance);
+           // print("Current Distance: " + distanceToWaypoint);
+            //print("NextDistnace: " + nextWaypointDistance);
             if (distanceToWaypoint < nextWaypointDistance)
             {
                 // Check if there is another waypoint or if we have reached the end of the path
                 if (currentWaypoint + 1 < path.vectorPath.Count)
                 {
                     currentWaypoint++;
-                    
+
                 }
                 else
                 {
@@ -124,15 +182,5 @@ public class BasicAi : MonoBehaviour
         // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
         //transform.position += velocity * Time.deltaTime;
         transform.Translate(velocity * Time.deltaTime);
-    }
-   void FixedUpdate()
-    {
-        Bounds playerB;
-        Bounds aiB;
-        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
-        aiB = GetComponent<Collider2D>().bounds;
-
-        AstarPath.active.UpdateGraphs(playerB);
-        AstarPath.active.UpdateGraphs(aiB);
     }
 }
