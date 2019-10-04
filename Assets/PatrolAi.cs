@@ -3,36 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class BasicAi : MonoBehaviour
+public class PatrolAi : BasicAi
 {
-    public Transform playerPosition;
-   
-    public Seeker seeker;
-    
-    public Path path;
-
-    public float speed = 2;
-
-    public float nextWaypointDistance = 0; //3
-
-    private int currentWaypoint = 0;
-
-    public float repathRate = 0.5f;
-    private float lastRepath = float.NegativeInfinity;
-
-    public bool reachedEndOfPath;
-    
-    
-    public void Start()
+    //public Transform playerPosition;
+    //Patrol system
+    //PatrolAi self;
+    public Transform[] targets;
+    int curIndex = 0;
+    int start = 0;
+    int end;
+    int direction = 1;
+    //private Seeker seeker;
+    enum basicStates
     {
-        seeker = GetComponent<Seeker>();
-        playerPosition = GameObject.Find("Player").transform;
-        
+        patrol = 0,
+        chase = 1,
+        attack = 2
+    }
+    basicStates curState = basicStates.patrol;
+    //public Path path;
+
+    //public float speed = 2;
+
+    //public float nextWaypointDistance = 0; //3
+
+    //private int currentWaypoint = 0;
+
+   // public float repathRate = 0.5f;
+    //private float lastRepath = float.NegativeInfinity;
+
+    //public bool reachedEndOfPath;
+
+    public new void Start()
+    {
+
+        base.Start();
+        end = targets.Length - 1;
         // Start a new path to the playerPosition, call the the OnPathComplete function
         // when the path has been calculated (which may take a few frames depending on the complexity)
         //seeker.StartPath(transform.position, targets[0].position, OnPathComplete);
     }
-
+    /*
     public void OnPathComplete(Path p)
     {
         Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
@@ -55,16 +66,48 @@ public class BasicAi : MonoBehaviour
             p.Release(this);
         }
     }
-/*
+    */
     public void Update()
     {
-        
-        
-       
+
+
+        print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
+        //Patrol system needs work!
+        if (curState == basicStates.patrol)
+        {
+            base.moveAI(targets[curIndex]);
+            if (Vector2.Distance(this.transform.position, targets[curIndex].position) < 2)
+            {
+                curIndex += direction;
+                print("Current index: " + curIndex);
+
+            }
+            if ((curIndex > end && direction > 0) || (curIndex < end && direction < 0))
+            {
+                curIndex = start;
+                start = end;
+                end = curIndex;
+                curIndex = start - direction;
+                direction = -direction;
+            }
+            if (Vector2.Distance(playerPosition.position, this.transform.position) < 10)
+            {
+                curState = basicStates.chase;
+            }
+            //moveAI(targets[index]);
+
+        }
+        else if (curState == basicStates.chase)
+        {
+            base.moveAI(playerPosition);
+            if (Vector2.Distance(playerPosition.position, this.transform.position) > 10)
+            {
+                curState = basicStates.patrol;
+            }
+        }
+        //moveAI(playerPosition);
     }
-    */
-    
-   void FixedUpdate()
+    void FixedUpdate()
     {
         Bounds playerB;
         Bounds aiB;
@@ -73,9 +116,8 @@ public class BasicAi : MonoBehaviour
 
         AstarPath.active.UpdateGraphs(playerB);
         AstarPath.active.UpdateGraphs(aiB);
-    }
-    public void moveAI(Transform target)
-        
+    }/*
+    void moveAI(Transform target)
     {
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
@@ -103,7 +145,7 @@ public class BasicAi : MonoBehaviour
             // If you want maximum performance you can check the squared distance instead to get rid of a
             // square root calculation. But that is outside the scope of this tutorial.
             distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
-           // print("Current Distance: " + distanceToWaypoint);
+            // print("Current Distance: " + distanceToWaypoint);
             //print("NextDistnace: " + nextWaypointDistance);
             if (distanceToWaypoint < nextWaypointDistance)
             {
@@ -143,4 +185,5 @@ public class BasicAi : MonoBehaviour
         //transform.position += velocity * Time.deltaTime;
         transform.Translate(velocity * Time.deltaTime);
     }
+    */
 }

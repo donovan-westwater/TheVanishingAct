@@ -3,79 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class BasicAi : MonoBehaviour
+public class GuardAi : BasicAi
 {
-    public Transform playerPosition;
-   
-    public Seeker seeker;
+    // Start is called before the first frame update
+    //public Transform playerPosition;
     
-    public Path path;
+    private Seeker seeker;
+    enum basicStates
+    {
+        guard = 0,
+        chase = 1,
+        attack = 2
+    }
+    basicStates curState = basicStates.guard;
+    //public Path path;
 
-    public float speed = 2;
+    //public float speed = 2;
 
-    public float nextWaypointDistance = 0; //3
+    //public float nextWaypointDistance = 0; //3
 
     private int currentWaypoint = 0;
 
-    public float repathRate = 0.5f;
+    //public float repathRate = 0.5f;
     private float lastRepath = float.NegativeInfinity;
 
-    public bool reachedEndOfPath;
-    
-    
-    public void Start()
+    //public bool reachedEndOfPath;
+    new void Start()
     {
-        seeker = GetComponent<Seeker>();
-        playerPosition = GameObject.Find("Player").transform;
         
-        // Start a new path to the playerPosition, call the the OnPathComplete function
-        // when the path has been calculated (which may take a few frames depending on the complexity)
-        //seeker.StartPath(transform.position, targets[0].position, OnPathComplete);
     }
 
-    public void OnPathComplete(Path p)
-    {
-        Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
-
-        // Path pooling. To avoid unnecessary allocations paths are reference counted.
-        // Calling Claim will increase the reference count by 1 and Release will reduce
-        // it by one, when it reaches zero the path will be pooled and then it may be used
-        // by other scripts. The ABPath.Construct and Seeker.StartPath methods will
-        // take a path from the pool if possible. See also the documentation page about path pooling.
-        p.Claim(this);
-        if (!p.error)
-        {
-            if (path != null) path.Release(this);
-            path = p;
-            // Reset the waypoint counter so that we start to move towards the first point in the path
-            currentWaypoint = 0;
-        }
-        else
-        {
-            p.Release(this);
-        }
-    }
-/*
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
         
-        
-       
-    }
-    */
-    
-   void FixedUpdate()
-    {
-        Bounds playerB;
-        Bounds aiB;
-        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
-        aiB = GetComponent<Collider2D>().bounds;
-
-        AstarPath.active.UpdateGraphs(playerB);
-        AstarPath.active.UpdateGraphs(aiB);
-    }
-    public void moveAI(Transform target)
-        
+    }/*
+    void moveAI(Transform target)
     {
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
@@ -103,7 +66,7 @@ public class BasicAi : MonoBehaviour
             // If you want maximum performance you can check the squared distance instead to get rid of a
             // square root calculation. But that is outside the scope of this tutorial.
             distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
-           // print("Current Distance: " + distanceToWaypoint);
+            // print("Current Distance: " + distanceToWaypoint);
             //print("NextDistnace: " + nextWaypointDistance);
             if (distanceToWaypoint < nextWaypointDistance)
             {
@@ -143,4 +106,27 @@ public class BasicAi : MonoBehaviour
         //transform.position += velocity * Time.deltaTime;
         transform.Translate(velocity * Time.deltaTime);
     }
+    public void OnPathComplete(Path p)
+    {
+        Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
+
+        // Path pooling. To avoid unnecessary allocations paths are reference counted.
+        // Calling Claim will increase the reference count by 1 and Release will reduce
+        // it by one, when it reaches zero the path will be pooled and then it may be used
+        // by other scripts. The ABPath.Construct and Seeker.StartPath methods will
+        // take a path from the pool if possible. See also the documentation page about path pooling.
+        p.Claim(this);
+        if (!p.error)
+        {
+            if (path != null) path.Release(this);
+            path = p;
+            // Reset the waypoint counter so that we start to move towards the first point in the path
+            currentWaypoint = 0;
+        }
+        else
+        {
+            p.Release(this);
+        }
+    }
+    */
 }
