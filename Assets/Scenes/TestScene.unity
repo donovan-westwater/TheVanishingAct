@@ -219,9 +219,9 @@ GameObject:
   - component: {fileID: 405979500}
   - component: {fileID: 405979499}
   - component: {fileID: 405979498}
-  - component: {fileID: 405979497}
   - component: {fileID: 405979501}
   - component: {fileID: 405979502}
+  - component: {fileID: 405979497}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -238,20 +238,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 405979496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79156fd79772fbc4181c70bbaf29c192, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a427b50954e57744ab33b485af8b0b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerPosition: {fileID: 0}
+  speed: 2
+  nextWaypointDistance: 2
+  repathRate: 0.5
+  reachedEndOfPath: 0
   targets:
   - {fileID: 42408808}
   - {fileID: 486831759}
   - {fileID: 1862395581}
   - {fileID: 598143758}
   - {fileID: 1529723997}
-  speed: 2
-  nextWaypointDistance: 1.6
-  repathRate: 0.5
-  reachedEndOfPath: 0
 --- !u!114 &405979498
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -71,7 +71,7 @@ public class PatrolAi : BasicAi
     {
 
 
-        print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
+        //print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
         //Patrol system needs work!
         if (curState == basicStates.patrol)
         {
@@ -105,6 +105,7 @@ public class PatrolAi : BasicAi
                 curState = basicStates.patrol;
             }
         }
+        //Attack state goes here!
         //moveAI(playerPosition);
     }
     void FixedUpdate()

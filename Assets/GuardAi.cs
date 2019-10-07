@@ -7,126 +7,132 @@ public class GuardAi : BasicAi
 {
     // Start is called before the first frame update
     //public Transform playerPosition;
-    
-    private Seeker seeker;
+
+    //private Seeker seeker;
+    public Transform guardLoc;
     enum basicStates
     {
         guard = 0,
         chase = 1,
-        attack = 2
+        attack = 2,
+        moveBack = 3
+    }
+    enum directions
+    {
+        north = 0,
+        south = 1,
+        east = 2,
+        west = 3
     }
     basicStates curState = basicStates.guard;
+    directions curdirction;
     //public Path path;
 
     //public float speed = 2;
 
     //public float nextWaypointDistance = 0; //3
 
-    private int currentWaypoint = 0;
-
+  // private int currentWaypoint = 0;
+    private int timer = 0;
     //public float repathRate = 0.5f;
-    private float lastRepath = float.NegativeInfinity;
+  //  private float lastRepath = float.NegativeInfinity;
 
     //public bool reachedEndOfPath;
     new void Start()
     {
-        
+        base.Start();
+        curdirction = currentDirection();
     }
-
+    private new void  FixedUpdate()
+    {
+        base.FixedUpdate();
+        timer += 1;
+    }
     // Update is called once per frame
     void Update()
     {
-        
-    }/*
-    void moveAI(Transform target)
-    {
-        if (Time.time > lastRepath + repathRate && seeker.IsDone())
+        Vector3 aimDir = gameObject.transform.GetChild(0).position;
+        aimDir.z = transform.position.z;
+        RaycastHit2D rayDir = Physics2D.Raycast(transform.position, aimDir, 50f);
+        curdirction = currentDirection();
+        if(curState == basicStates.guard)
         {
-            lastRepath = Time.time;
-
-            // Start a new path to the playerPosition, call the the OnPathComplete function
-            // when the path has been calculated (which may take a few frames depending on the complexity)
-            seeker.StartPath(transform.position, target.position, OnPathComplete);
-        }
-        if (path == null)
-        {
-            // We have no path to follow yet, so don't do anything
-            return;
-        }
-
-        // Check in a loop if we are close enough to the current waypoint to switch to the next one.
-        // We do this in a loop because many waypoints might be close to each other and we may reach
-        // several of them in the same frame.
-        reachedEndOfPath = false;
-        // The distance to the next waypoint in the path
-        float distanceToWaypoint;
-        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint], Color.red);
-        while (true)
-        {
-            // If you want maximum performance you can check the squared distance instead to get rid of a
-            // square root calculation. But that is outside the scope of this tutorial.
-            distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
-            // print("Current Distance: " + distanceToWaypoint);
-            //print("NextDistnace: " + nextWaypointDistance);
-            if (distanceToWaypoint < nextWaypointDistance)
+            if (Vector2.Distance(guardLoc.position, this.transform.position) > 1f) curState = basicStates.moveBack;
+            switch (curdirction)
             {
-                // Check if there is another waypoint or if we have reached the end of the path
-                if (currentWaypoint + 1 < path.vectorPath.Count)
-                {
-                    currentWaypoint++;
-
-                }
-                else
-                {
-                    // Set a status variable to indicate that the agent has reached the end of the path.
-                    // You can use this to trigger some special code if your game requires that.
-                    reachedEndOfPath = true;
+                case directions.east:
+                  
+                    if (rayDir && rayDir.collider.CompareTag("Wall")) updateFacing(90);
+                    else
+                    {
+                        if (base.canSeePlayer()) curState = basicStates.chase;
+                    }
                     break;
-                }
+                case directions.west:
+                    if (rayDir && rayDir.collider.CompareTag("Wall")) updateFacing(90);
+                    else
+                    {
+                        if (base.canSeePlayer()) curState = basicStates.chase;
+                    }
+                    break;
+                case directions.north:
+                    if (rayDir && rayDir.collider.CompareTag("Wall")) updateFacing(90);
+                    else
+                    {
+                        if (base.canSeePlayer()) curState = basicStates.chase;
+                    }
+                    break;
+                case directions.south:
+                    if (rayDir && rayDir.collider.CompareTag("Wall")) updateFacing(90);
+                    else
+                    {
+                        if (base.canSeePlayer()) curState = basicStates.chase;
+                    }
+                    break;
             }
-            else
+            if (timer % 50 == 0) updateFacing(90);
+        }
+        else if(curState == basicStates.chase)
+        {
+            base.moveAI(playerPosition);
+            if (!canSeePlayer())
             {
-                break;
+                curState = basicStates.guard;
+            }
+        }else if(curState == basicStates.moveBack)
+        {
+            moveAI(guardLoc);
+            if (Vector2.Distance(guardLoc.position, this.transform.position) < 1f)
+            {
+                curState = basicStates.guard;
+                //Snap back into cardinal directions here
             }
         }
-
-        // Slow down smoothly upon approaching the end of the path
-        // This value will smoothly go from 1 to 0 as the agent approaches the last waypoint in the path.
-        var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
-
-        // Direction to the next waypoint
-        // Normalize it so that it has a length of 1 world unit
-        Vector2 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-        // Multiply the direction by our desired speed to get a velocity
-        Vector3 velocity = dir * speed * speedFactor;
-
-
-
-        // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
-        //transform.position += velocity * Time.deltaTime;
-        transform.Translate(velocity * Time.deltaTime);
+        //Attack State goes here! (if close to player attack)
     }
-    public void OnPathComplete(Path p)
+    
+    directions currentDirection()
     {
-        Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
-
-        // Path pooling. To avoid unnecessary allocations paths are reference counted.
-        // Calling Claim will increase the reference count by 1 and Release will reduce
-        // it by one, when it reaches zero the path will be pooled and then it may be used
-        // by other scripts. The ABPath.Construct and Seeker.StartPath methods will
-        // take a path from the pool if possible. See also the documentation page about path pooling.
-        p.Claim(this);
-        if (!p.error)
+        if(Vector2.Angle(base.getFacing(), new Vector2(0,1)) < 45f)
         {
-            if (path != null) path.Release(this);
-            path = p;
-            // Reset the waypoint counter so that we start to move towards the first point in the path
-            currentWaypoint = 0;
+            return directions.north;
+        }
+        else if (Vector2.Angle(base.getFacing(), new Vector2(1, 0)) < 45f)
+        {
+            return directions.west;
+        }else if (Vector2.Angle(base.getFacing(), new Vector2(0, -1)) < 45f)
+        {
+            return directions.south;
         }
         else
         {
-            p.Release(this);
+            return directions.east;
         }
+        
     }
-    */
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(5);
+       
+    }
 }

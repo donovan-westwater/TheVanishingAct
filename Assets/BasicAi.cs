@@ -7,8 +7,10 @@ public class BasicAi : MonoBehaviour
 {
     public Transform playerPosition;
    
-    public Seeker seeker;
-    
+    private Seeker seeker;
+
+    private bool playerVisible = true;
+
     public Path path;
 
     public float speed = 2;
@@ -21,13 +23,15 @@ public class BasicAi : MonoBehaviour
     private float lastRepath = float.NegativeInfinity;
 
     public bool reachedEndOfPath;
-    
+
+    Vector2 facing;
     
     public void Start()
     {
         seeker = GetComponent<Seeker>();
         playerPosition = GameObject.Find("Player").transform;
-        
+        facing = gameObject.transform.GetChild(0).transform.position - this.transform.position;
+
         // Start a new path to the playerPosition, call the the OnPathComplete function
         // when the path has been calculated (which may take a few frames depending on the complexity)
         //seeker.StartPath(transform.position, targets[0].position, OnPathComplete);
@@ -35,7 +39,7 @@ public class BasicAi : MonoBehaviour
 
     public void OnPathComplete(Path p)
     {
-        Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
+        //Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
 
         // Path pooling. To avoid unnecessary allocations paths are reference counted.
         // Calling Claim will increase the reference count by 1 and Release will reduce
@@ -64,7 +68,7 @@ public class BasicAi : MonoBehaviour
     }
     */
     
-   void FixedUpdate()
+   public void FixedUpdate()
     {
         Bounds playerB;
         Bounds aiB;
@@ -77,6 +81,7 @@ public class BasicAi : MonoBehaviour
     public void moveAI(Transform target)
         
     {
+        GameObject aimSprite = transform.GetChild(0).gameObject;
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
             lastRepath = Time.time;
@@ -134,6 +139,17 @@ public class BasicAi : MonoBehaviour
         // Direction to the next waypoint
         // Normalize it so that it has a length of 1 world unit
         Vector2 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+        //Rotates aim sprite to face direction of movment, currently a bit too slow
+        if (Vector3.Cross(facing.normalized, dir).z < 0)
+        {
+            aimSprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -Vector2.Angle(facing,dir)*Time.deltaTime); //-0.1f
+        }
+        else if (Vector3.Cross(facing.normalized, dir).z > 0)
+        {
+
+            aimSprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), Vector2.Angle(facing, dir)*Time.deltaTime);
+        }
+        facing = aimSprite.transform.position - this.transform.position;
         // Multiply the direction by our desired speed to get a velocity
         Vector3 velocity = dir * speed * speedFactor;
 
@@ -142,5 +158,42 @@ public class BasicAi : MonoBehaviour
         // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
         //transform.position += velocity * Time.deltaTime;
         transform.Translate(velocity * Time.deltaTime);
+    }
+    public bool canSeePlayer()
+    {
+        //Vector3 facingDir = gameObject.transform.GetChild(0).transform.position - this.transform.position;
+        Vector3 facingDir = this.facing;
+        facingDir.z = transform.position.z;
+        //Debug.DrawLine(this.transform.position, this.transform.position + facingDir, Color.green);
+        //Currently will see through walls. Going to switch to a raycast system later!!!!!
+        RaycastHit2D sightLine = Physics2D.Raycast(transform.position, playerPosition.position-transform.position, 10f);
+        Debug.DrawLine(this.transform.position, playerPosition.position, Color.green);
+        if (!sightLine)
+        {
+            print("I cant see player");
+            return false;
+        }
+        print(Vector2.Angle(facingDir, playerPosition.position));
+        if (playerVisible && Vector2.Angle(facingDir.normalized,(playerPosition.position - this.transform.position).normalized) < 45f && sightLine.collider.name.Equals("Player"))
+        {
+            print("I CAN SEE YOU, YOU LITTLE MAGE");
+            return true;
+        }
+        return false;
+    }
+    public void updateFacing(float degrees)
+    {
+        //rotate around fuction called here, then update facing by recalculating aim sprite
+        GameObject aim_sprite = this.gameObject.transform.GetChild(0).gameObject;
+        aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), degrees);
+        this.facing = gameObject.transform.GetChild(0).transform.position - this.transform.position;
+    }
+    public void setVisible(bool visiblity)
+    {
+        this.playerVisible = visiblity;
+    }
+    public Vector2 getFacing()
+    {
+        return this.facing;
     }
 }
