@@ -30,7 +30,6 @@ public class TunnelLogic : MonoBehaviour
         this.transform.position = player.transform.position;
         Vector2 dir = player.GetComponent<Player_Controls>().grabSpellAim();
         float angle = Vector2.Angle(tunnelDir, dir);
-        tunnelDir = dir;
         if (Vector3.Cross(dir.normalized, tunnelDir.normalized).z < 0 )
         {
             angle =  Vector2.Angle(tunnelDir, dir);
@@ -42,6 +41,7 @@ public class TunnelLogic : MonoBehaviour
             //-0.1f
         }
         this.transform.Rotate(new Vector3(0, 0, 1), angle, Space.World);
+        tunnelDir = dir;
         //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         //this.transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), angle);
         //player.GetComponent<Collider2D>().enabled = true;
