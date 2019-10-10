@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 6131350783368564222, guid: dfd468cc4b0aa1c4593f470d3902616d,
         type: 3}
       propertyPath: m_Name
-      value: Glass
+      value: Glass Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6131350783368564220, guid: dfd468cc4b0aa1c4593f470d3902616d,
         type: 3}
