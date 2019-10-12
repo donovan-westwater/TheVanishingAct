@@ -15,6 +15,7 @@ public class Player_Controls : MonoBehaviour
     private float angle;
     private int curInvSize;
     private Vector3 baseDir = new Vector3(1, 0, 0);
+    private int mana = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +109,7 @@ public class Player_Controls : MonoBehaviour
         {
             print("I hit object");
             curInvSize += 1;
+            mana -= 1;
             if(curInvSize < inventory.Length)
             {
                 addItem("Object", curInvSize - 1);
@@ -130,5 +132,13 @@ public class Player_Controls : MonoBehaviour
         Debug.DrawLine(transform.position, spell.point, Color.black, 2f);
 
         
+    }
+    public void setMana(int amount)
+    {
+        mana = amount;
+    }
+    public int getMana()
+    {
+        return mana;
     }
 }
