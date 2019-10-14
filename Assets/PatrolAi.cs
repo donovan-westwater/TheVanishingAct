@@ -18,7 +18,8 @@ public class PatrolAi : BasicAi
     {
         patrol = 0,
         chase = 1,
-        attack = 2
+        attack = 2,
+        alerted = 3
     }
     basicStates curState = basicStates.patrol;
     //public Path path;
@@ -29,7 +30,7 @@ public class PatrolAi : BasicAi
 
     //private int currentWaypoint = 0;
 
-   // public float repathRate = 0.5f;
+    // public float repathRate = 0.5f;
     //private float lastRepath = float.NegativeInfinity;
 
     //public bool reachedEndOfPath;
@@ -73,6 +74,10 @@ public class PatrolAi : BasicAi
 
         //print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
         //Patrol system needs work!
+        if (base.getAlert())
+        {
+            curState = basicStates.alerted;
+        }
         if (curState == basicStates.patrol)
         {
             base.moveAI(targets[curIndex]);
@@ -104,20 +109,40 @@ public class PatrolAi : BasicAi
             {
                 curState = basicStates.patrol;
             }
+            base.attack();
         }
-        //Attack state goes here!
-        //moveAI(playerPosition);
+        else if (curState == basicStates.alerted)
+        {
+            moveAI(base.getWhereToSearch());
+            if (canSeePlayer())
+            {
+                curState = basicStates.chase;
+                base.setAlert(false);
+            }
+            if (Vector2.Distance(base.getWhereToSearch().position, this.transform.position) < 1)
+            {
+                base.alertTimer += 1 * Time.deltaTime;
+                if (alertTimer >= base.alertWait)
+                {
+                    base.alertTimer = 0;
+                    base.setAlert(false);
+                    curState = basicStates.patrol;
+                }
+            }
+            //Attack state goes here! [Attack will no longer be its own state]
+            //moveAI(playerPosition);
+        }
     }
-    void FixedUpdate()
-    {
-        Bounds playerB;
-        Bounds aiB;
-        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
-        aiB = GetComponent<Collider2D>().bounds;
+        void FixedUpdate()
+        {
+            Bounds playerB;
+            Bounds aiB;
+            playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
+            aiB = GetComponent<Collider2D>().bounds;
 
-        AstarPath.active.UpdateGraphs(playerB);
-        AstarPath.active.UpdateGraphs(aiB);
-    }/*
+            AstarPath.active.UpdateGraphs(playerB);
+            AstarPath.active.UpdateGraphs(aiB);
+        }/*
     void moveAI(Transform target)
     {
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
@@ -187,4 +212,5 @@ public class PatrolAi : BasicAi
         transform.Translate(velocity * Time.deltaTime);
     }
     */
+    
 }

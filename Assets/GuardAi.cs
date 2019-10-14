@@ -15,7 +15,8 @@ public class GuardAi : BasicAi
         guard = 0,
         chase = 1,
         attack = 2,
-        moveBack = 3
+        moveBack = 3,
+        alerted = 4
     }
     enum directions
     {
@@ -55,6 +56,10 @@ public class GuardAi : BasicAi
         aimDir.z = transform.position.z;
         RaycastHit2D rayDir = Physics2D.Raycast(transform.position, aimDir, 50f);
         curdirction = currentDirection();
+        if (base.getAlert())
+        {
+            curState = basicStates.alerted;
+        }
         if(curState == basicStates.guard)
         {
             if (Vector2.Distance(guardLoc.position, this.transform.position) > 1f) curState = basicStates.moveBack;
@@ -99,7 +104,9 @@ public class GuardAi : BasicAi
             {
                 curState = basicStates.guard;
             }
-        }else if(curState == basicStates.moveBack)
+            base.attack();
+        }
+        else if(curState == basicStates.moveBack)
         {
             moveAI(guardLoc);
             if (Vector2.Distance(guardLoc.position, this.transform.position) < 1f)
@@ -107,8 +114,26 @@ public class GuardAi : BasicAi
                 curState = basicStates.guard;
                 //Snap back into cardinal directions here
             }
+        }else if(curState == basicStates.alerted)
+        {
+            moveAI(base.getWhereToSearch());
+            if (canSeePlayer())
+            {
+                curState = basicStates.chase;
+                base.setAlert(false);
+            }
+            if(Vector2.Distance(base.getWhereToSearch().position,this.transform.position) < 1)
+            {
+                base.alertTimer += 1 * Time.deltaTime;
+                if(alertTimer >= base.alertWait)
+                {
+                    base.alertTimer = 0;
+                    base.setAlert(false);
+                    curState = basicStates.moveBack;
+                }
+            }
         }
-        //Attack State goes here! (if close to player attack)
+        //Attack State goes here! (if close to player attack) [No longer its own state]
     }
     
     directions currentDirection()

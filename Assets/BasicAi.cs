@@ -15,7 +15,7 @@ public class BasicAi : MonoBehaviour
 
     public float speed = 2;
 
-    public float nextWaypointDistance = 0; //3
+    public float nextWaypointDistance = 2f; //3
 
     private int currentWaypoint = 0;
 
@@ -23,6 +23,11 @@ public class BasicAi : MonoBehaviour
     private float lastRepath = float.NegativeInfinity;
 
     public bool reachedEndOfPath;
+
+    bool alerted = false;
+    public float alertWait = 5f;
+    public float alertTimer = 0;
+    Transform whereToSearch;
 
     Vector2 facing;
     
@@ -195,5 +200,29 @@ public class BasicAi : MonoBehaviour
     public Vector2 getFacing()
     {
         return this.facing;
+    }
+    public void setAlert(bool truth)
+    {
+        this.alerted = truth;
+    }
+    public bool getAlert()
+    {
+        return this.alerted;
+    }
+    public Transform getWhereToSearch()
+    {
+        return whereToSearch;
+    }
+    public void setWhereToSearch(Transform loc)
+    {
+        whereToSearch = loc;
+    }
+    public void attack()
+    {
+        GameObject player = GameObject.Find("Player");
+        if(Vector2.Distance(playerPosition.position,this.transform.position) < 2)
+        {
+            player.SetActive(false);
+        }
     }
 }
