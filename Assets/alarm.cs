@@ -32,8 +32,13 @@ public class alarm : MonoBehaviour
         {
             if (t == null) continue;
             baseTrigger check = t.GetComponent<baseTrigger>();
-            alarmTriggered = check.getIfTriggered();
-            if (check.getWhereTriggered() != null) lastSeen = check.getWhereTriggered();
+            if (!alarmTriggered && check.getIfTriggered())
+            {
+                alarmTriggered = true;
+                if (check.getWhereTriggered() != null) lastSeen = check.getWhereTriggered();
+            }
+            //alarmTriggered = check.getIfTriggered();
+            
         }
         if (alarmTriggered)
         {
@@ -50,7 +55,7 @@ public class alarm : MonoBehaviour
     {
         bool ret = false;
 
-        GameObject gameout = new GameObject();
+       // GameObject gameout = new GameObject();
         GameObject[] guards = GameObject.FindGameObjectsWithTag("enemy");
         foreach (GameObject g in guards)
         {
@@ -58,8 +63,8 @@ public class alarm : MonoBehaviour
             {
                 ret = true;
                 g.GetComponent<BasicAi>().setAlert(true);
-                gameout.transform.position = lastSeen;
-                g.GetComponent<BasicAi>().setWhereToSearch(gameout.transform);
+                //gameout.transform.position = lastSeen;
+                g.GetComponent<BasicAi>().setWhereToSearch(lastSeen);
             }
         }
 

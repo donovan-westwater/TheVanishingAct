@@ -41,7 +41,7 @@ public class camera : baseTrigger
         print(Vector2.Angle(facingDir, playerPosition.position));
         if (Vector2.Angle(facingDir.normalized, (playerPosition.position - this.transform.position).normalized) < 35f && sightLine.collider.name.Equals("Player"))
         {
-            print("I CAN SEE YOU, YOU LITTLE MAGE");
+            print("THE CAMEERA HAS CAUGHT YOU!");
             return true;
         }
         return false;

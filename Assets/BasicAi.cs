@@ -27,7 +27,7 @@ public class BasicAi : MonoBehaviour
     bool alerted = false;
     public float alertWait = 5f;
     public float alertTimer = 0;
-    Transform whereToSearch;
+    Vector2 whereToSearch; //was once a transform
 
     Vector2 facing;
     
@@ -164,6 +164,87 @@ public class BasicAi : MonoBehaviour
         //transform.position += velocity * Time.deltaTime;
         transform.Translate(velocity * Time.deltaTime);
     }
+    public void moveAI(Vector2 target)
+
+    {
+        GameObject aimSprite = transform.GetChild(0).gameObject;
+        if (Time.time > lastRepath + repathRate && seeker.IsDone())
+        {
+            lastRepath = Time.time;
+
+            // Start a new path to the playerPosition, call the the OnPathComplete function
+            // when the path has been calculated (which may take a few frames depending on the complexity)
+            seeker.StartPath(transform.position, target, OnPathComplete);
+        }
+        if (path == null)
+        {
+            // We have no path to follow yet, so don't do anything
+            return;
+        }
+
+        // Check in a loop if we are close enough to the current waypoint to switch to the next one.
+        // We do this in a loop because many waypoints might be close to each other and we may reach
+        // several of them in the same frame.
+        reachedEndOfPath = false;
+        // The distance to the next waypoint in the path
+        float distanceToWaypoint;
+        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint], Color.red);
+        while (true)
+        {
+            // If you want maximum performance you can check the squared distance instead to get rid of a
+            // square root calculation. But that is outside the scope of this tutorial.
+            distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
+            // print("Current Distance: " + distanceToWaypoint);
+            //print("NextDistnace: " + nextWaypointDistance);
+            if (distanceToWaypoint < nextWaypointDistance)
+            {
+                // Check if there is another waypoint or if we have reached the end of the path
+                if (currentWaypoint + 1 < path.vectorPath.Count)
+                {
+                    currentWaypoint++;
+
+                }
+                else
+                {
+                    // Set a status variable to indicate that the agent has reached the end of the path.
+                    // You can use this to trigger some special code if your game requires that.
+                    reachedEndOfPath = true;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        // Slow down smoothly upon approaching the end of the path
+        // This value will smoothly go from 1 to 0 as the agent approaches the last waypoint in the path.
+        var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
+
+        // Direction to the next waypoint
+        // Normalize it so that it has a length of 1 world unit
+        Vector2 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+        //Rotates aim sprite to face direction of movment, currently a bit too slow
+        if (Vector3.Cross(facing.normalized, dir).z < 0)
+        {
+            aimSprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -Vector2.Angle(facing, dir) * Time.deltaTime); //-0.1f
+        }
+        else if (Vector3.Cross(facing.normalized, dir).z > 0)
+        {
+
+            aimSprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), Vector2.Angle(facing, dir) * Time.deltaTime);
+        }
+        facing = aimSprite.transform.position - this.transform.position;
+        // Multiply the direction by our desired speed to get a velocity
+        Vector3 velocity = dir * speed * speedFactor;
+
+
+
+        // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
+        //transform.position += velocity * Time.deltaTime;
+        transform.Translate(velocity * Time.deltaTime);
+    }
     public bool canSeePlayer()
     {
         //Vector3 facingDir = gameObject.transform.GetChild(0).transform.position - this.transform.position;
@@ -209,11 +290,11 @@ public class BasicAi : MonoBehaviour
     {
         return this.alerted;
     }
-    public Transform getWhereToSearch()
+    public Vector2 getWhereToSearch()
     {
         return whereToSearch;
     }
-    public void setWhereToSearch(Transform loc)
+    public void setWhereToSearch(Vector2 loc)
     {
         whereToSearch = loc;
     }

@@ -119,7 +119,7 @@ public class PatrolAi : BasicAi
                 curState = basicStates.chase;
                 base.setAlert(false);
             }
-            if (Vector2.Distance(base.getWhereToSearch().position, this.transform.position) < 1)
+            if (Vector2.Distance(base.getWhereToSearch(), this.transform.position) < 1)
             {
                 base.alertTimer += 1 * Time.deltaTime;
                 if (alertTimer >= base.alertWait)

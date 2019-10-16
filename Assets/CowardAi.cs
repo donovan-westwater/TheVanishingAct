@@ -40,7 +40,7 @@ public class CowardAi : BasicAi
             if (canSeePlayer()||base.getAlert())
             {
                 lastSeen = player.transform.position;
-                if (base.getAlert()) lastSeen = base.getWhereToSearch().position;
+                if (base.getAlert()) lastSeen = base.getWhereToSearch();
                  curState = basicStates.flee;
             }
             if(Vector2.Distance(transform.position,home.position) > 1)
@@ -123,7 +123,7 @@ public class CowardAi : BasicAi
     {
         bool ret = false;
 
-        GameObject gameout = new GameObject();
+       // GameObject gameout = new GameObject();
         GameObject[] guards = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject g in guards)
             {
@@ -131,8 +131,8 @@ public class CowardAi : BasicAi
                 {
                 ret = true;
                 g.GetComponent<BasicAi>().setAlert(true);
-                gameout.transform.position = lastSeen;
-                g.GetComponent<BasicAi>().setWhereToSearch(gameout.transform);
+               // gameout.transform.position = lastSeen;
+                g.GetComponent<BasicAi>().setWhereToSearch(lastSeen);
                 }
             }
 

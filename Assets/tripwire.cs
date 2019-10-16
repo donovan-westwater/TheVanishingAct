@@ -25,9 +25,9 @@ public class tripwire : baseTrigger
             }
         }
     }
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.collider.CompareTag("Player") == true){
+        if (col.CompareTag("Player") == true){
             hasTriggerd = true;
             whereTriggered = col.gameObject.transform.position;
         }

@@ -262,6 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 144318852}
   - component: {fileID: 144318851}
+  - component: {fileID: 144318853}
   m_Layer: 0
   m_Name: Alarm
   m_TagString: Untagged
@@ -331,6 +332,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144318853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144318850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43fcf115a5b309e479c911066a61418f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachedTriggers:
+  - {fileID: 1174567090}
+  - {fileID: 1477667461}
+  - {fileID: 0}
+  - {fileID: 0}
+  alertRadis: 0
 --- !u!1 &241959845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,6 +1183,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1174567092}
   - component: {fileID: 1174567091}
+  - component: {fileID: 1174567094}
+  - component: {fileID: 1174567093}
   m_Layer: 0
   m_Name: Tripwire
   m_TagString: Untagged
@@ -1233,6 +1254,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1174567093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174567090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0340a3ff8729fa24092fe0f59acf4fbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasTriggerd: 0
+  whereTriggered: {x: 0, y: 0}
+--- !u!61 &1174567094
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174567090}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+  m_EdgeRadius: 0
 --- !u!1 &1287371490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,6 +1689,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1477667463}
   - component: {fileID: 1477667462}
+  - component: {fileID: 1477667464}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1698,6 +1760,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1477667464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477667461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b7d8e287172114d9f41eae5e0320a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasTriggerd: 0
+  whereTriggered: {x: 0, y: 0}
 --- !u!1 &1529723996
 GameObject:
   m_ObjectHideFlags: 0
@@ -3024,6 +3100,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (Guard)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108363582143471606, guid: 905e662501de1c24b826a561ec11ba3f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8108363582143471612, guid: 905e662501de1c24b826a561ec11ba3f,
         type: 3}
