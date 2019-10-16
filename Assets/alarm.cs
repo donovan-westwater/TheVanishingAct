@@ -6,7 +6,7 @@ public class alarm : MonoBehaviour
 {
     public GameObject[] attachedTriggers = new GameObject[4];
     public float alertRadis;
-    public float triggerRadis;
+    //public float triggerRadis;
     Vector2 lastSeen;
     bool alarmTriggered = false;
     float timer = 0;
@@ -18,7 +18,7 @@ public class alarm : MonoBehaviour
         // base.Start();
         lastSeen = GameObject.Find("Player").transform.position;
         alertRadis = 20f;
-        triggerRadis = 10f;
+        //triggerRadis = 10f;
     }
 
     // Update is called once per frame
@@ -28,10 +28,12 @@ public class alarm : MonoBehaviour
         //Change to a raycast system! [move this over to camera script]
         //have a compare tag system for the interactibles, all should have a triggered setting.
         //use OOD for interactibles that trigger the alarm!!
-        if (Vector2.Distance(player.transform.position, this.transform.position) < triggerRadis)
+        foreach(GameObject t in attachedTriggers)
         {
-            lastSeen = player.transform.position;
-            alarmTriggered = true;
+            if (t == null) continue;
+            baseTrigger check = t.GetComponent<baseTrigger>();
+            alarmTriggered = check.getIfTriggered();
+            if (check.getWhereTriggered() != null) lastSeen = check.getWhereTriggered();
         }
         if (alarmTriggered)
         {
