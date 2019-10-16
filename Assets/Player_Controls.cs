@@ -15,7 +15,7 @@ public class Player_Controls : MonoBehaviour
     private float angle;
     private int curInvSize;
     private Vector3 baseDir = new Vector3(1, 0, 0);
-    private int mana = 3;
+    public int mana = 3; //The max mana the player should have is 3!
     // Start is called before the first frame update
     void Start()
     {
