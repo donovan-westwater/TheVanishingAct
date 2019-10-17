@@ -141,16 +141,7 @@ public class PatrolAi : BasicAi
             //moveAI(playerPosition);
         }
     }
-        void FixedUpdate()
-        {
-            Bounds playerB;
-            Bounds aiB;
-            playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
-            aiB = GetComponent<Collider2D>().bounds;
-
-            AstarPath.active.UpdateGraphs(playerB);
-            AstarPath.active.UpdateGraphs(aiB);
-        }/*
+       /*
     void moveAI(Transform target)
     {
         if (Time.time > lastRepath + repathRate && seeker.IsDone())

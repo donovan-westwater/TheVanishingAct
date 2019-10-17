@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Player_Controls : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Player_Controls : MonoBehaviour
         speed = 10f;
         rb2d = GetComponent<Rigidbody2D>();
         
+
     }
     public Vector3 grabSpellAim()
     {
