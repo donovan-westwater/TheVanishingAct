@@ -68,13 +68,13 @@ public class Player_Controls : MonoBehaviour
         float angleTemp = Mathf.Acos(Vector3.Dot(currentDir, mouseVect) / (currentDir.magnitude * mouseVect.magnitude));
         if(Vector3.Cross(mouseVect.normalized,currentDir.normalized).z < 0 && angleTemp > Mathf.Abs(0.01f))
         {
-            angle -= 0.1f;
-            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), 0.1f); //-0.1f
+            angle -= Vector2.Angle(mouseVect, currentDir) * Time.deltaTime;
+            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), Vector2.Angle(mouseVect, currentDir) * Time.deltaTime); //0.1f
         }
         else if(Vector3.Cross(mouseVect.normalized, currentDir.normalized).z > 0 && angleTemp > Mathf.Abs(0.01f)) 
         {
-            angle += 0.1f;
-            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -0.1f); //-0.1f
+            angle += Vector2.Angle(mouseVect, currentDir) * Time.deltaTime;
+            aim_sprite.transform.RotateAround(transform.position, new Vector3(0, 0, 1), -Vector2.Angle(mouseVect, currentDir) * Time.deltaTime); //-0.1f
         }
         //print("Angle: " + angleTemp);
         //print("Cross: " + Vector3.Cross(mouseVect.normalized, currentDir.normalized).z);
