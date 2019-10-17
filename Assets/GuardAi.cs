@@ -10,6 +10,7 @@ public class GuardAi : BasicAi
 
     //private Seeker seeker;
     public Transform guardLoc;
+    public float wallcheck = 5f;
     enum basicStates
     {
         guard = 0,
@@ -54,7 +55,7 @@ public class GuardAi : BasicAi
     {
         Vector3 aimDir = gameObject.transform.GetChild(0).position;
         aimDir.z = transform.position.z;
-        RaycastHit2D rayDir = Physics2D.Raycast(transform.position, aimDir, 50f);
+        RaycastHit2D rayDir = Physics2D.Raycast(transform.position, aimDir, wallcheck);
         curdirction = currentDirection();
         if (base.getAlert())
         {

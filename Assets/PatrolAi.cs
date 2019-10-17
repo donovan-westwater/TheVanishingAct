@@ -78,8 +78,10 @@ public class PatrolAi : BasicAi
         {
             curState = basicStates.alerted;
         }
+        //Switch to seeing system with a wait timer before ignoring the player
         if (curState == basicStates.patrol)
         {
+          
             base.moveAI(targets[curIndex]);
             if (Vector2.Distance(this.transform.position, targets[curIndex].position) < 2)
             {
@@ -95,10 +97,16 @@ public class PatrolAi : BasicAi
                 curIndex = start - direction;
                 direction = -direction;
             }
+            if (base.canSeePlayer())
+            {
+                curState = basicStates.chase;
+            }
+            /*
             if (Vector2.Distance(playerPosition.position, this.transform.position) < 10)
             {
                 curState = basicStates.chase;
             }
+            */
             //moveAI(targets[index]);
 
         }

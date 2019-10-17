@@ -75,12 +75,12 @@ public class BasicAi : MonoBehaviour
     
    public void FixedUpdate()
     {
-        Bounds playerB;
+       // Bounds playerB;
         Bounds aiB;
-        playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
+       // playerB = GameObject.Find("Player").GetComponent<Collider2D>().bounds;
         aiB = GetComponent<Collider2D>().bounds;
 
-        AstarPath.active.UpdateGraphs(playerB);
+        //AstarPath.active.UpdateGraphs(playerB);
         AstarPath.active.UpdateGraphs(aiB);
     }
     public void moveAI(Transform target)
