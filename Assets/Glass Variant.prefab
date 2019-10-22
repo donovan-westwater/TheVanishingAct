@@ -12,6 +12,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glass Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6131350783368564222, guid: dfd468cc4b0aa1c4593f470d3902616d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Glass
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131350783368564222, guid: dfd468cc4b0aa1c4593f470d3902616d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.013883919
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.9811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.9210711
+      objectReference: {fileID: 0}
     - target: {fileID: 6131350783368564220, guid: dfd468cc4b0aa1c4593f470d3902616d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -71,21 +96,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.08752764
-      objectReference: {fileID: 0}
-    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0.013883919
-      objectReference: {fileID: 0}
-    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0.9811321
-      objectReference: {fileID: 0}
-    - target: {fileID: 6131350783368564223, guid: dfd468cc4b0aa1c4593f470d3902616d,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0.9210711
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfd468cc4b0aa1c4593f470d3902616d, type: 3}

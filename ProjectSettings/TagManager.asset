@@ -8,6 +8,8 @@ TagManager:
   - pellet
   - Wall
   - enemy
+  - Puzzle
+  - Obstacle
   layers:
   - Default
   - TransparentFX
