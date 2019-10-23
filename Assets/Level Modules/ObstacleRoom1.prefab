@@ -1379,4 +1379,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mana: 0
-  skill: patrol
+  skill: Patrol

@@ -8,29 +8,37 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] traversables;
     public GameObject[] puzzles;
     public GameObject[] obstacles;
-    List<Transform> puzzlePoints;
-    List<Transform> obstaclePoints;
+    public string[] skills; //SHOULD BE THE SAME SIZE OF COUNT
+    public int[] count; //SHOULD BE THE SAME SIZE OF SKILLS
+    List<Transform> puzzlePoints = new List<Transform>();
+    List<Transform> obstaclePoints = new List<Transform>();
     int totalMana = 0;
     //skillCount is the dictioary for how much of each skill should be present on the map at the current time
-    public Dictionary<string, int> skillCount; // skill names Teleport, Guard, Partol, Grab,Move (Puzzles should teach different skills to the obstacles!)
+    public Dictionary<string, int> skillCount = new Dictionary<string, int>(); // skill names Teleport, Guard, Partol, Grab,Move (Puzzles should teach different skills to the obstacles!)
     Dictionary<string, List<GameObject>> skillMap = new Dictionary<string, List<GameObject>>();
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0;i < count.Length;i++)
+        {
+            skillCount.Add(skills[i], count[i]);
+        }
+        
         //Randomly selecting mansion layout and then gathering its puzzle and obstacle spawn points
         //Remember the points store both location AND rotation for the rooms!
         int rand = Random.Range(0, traversables.Length - 1);
         GameObject travs = Instantiate(traversables[rand], this.transform.position, this.transform.rotation);
-        foreach (Transform child in transform.Find("PuzzlePoints"))
+        foreach (Transform child in travs.transform.Find("PuzzlePoints").transform)
         {
             puzzlePoints.Add(child);
            // totalMana += child.GetComponent<RoomStats>().mana;
         }
-        foreach (Transform child in transform.Find("ObstaclePoints"))
+        foreach (Transform child in travs.transform.Find("ObstaclePoints").transform)
         {
             obstaclePoints.Add(child);
         }
         //Go through the puzzles and obstcles to gather and organize the puzzles and obstacles into skill catagories
+        
         foreach(GameObject g in puzzles)
         {
             string checkSkill = g.GetComponent<RoomStats>().skill;
@@ -61,30 +69,42 @@ public class LevelGenerator : MonoBehaviour
         }
         //Spawning rooms: Go through skillCount and pick a random puzzle point and a random puzzle for that skill out 
         //of the map, Repeat this process for obstacles
-        foreach(string k in skillCount.Keys)
+        Dictionary<string, int> decrimentTracker = new Dictionary<string, int>();
+        foreach (string k in skillCount.Keys)
         {
             //Pick a random puzzle/obstacle out of map,random Point, decriment skillCount value for the key 
             //and pop off the point from the corresponding list
-            while(skillCount[k] > 0)
+
+            decrimentTracker.Add(k, 0);
+            while(skillCount[k] - decrimentTracker[k] > 0)
             {
                 rand = Random.Range(0, skillMap[k].Count-1);
                 int pointRand = 0;
                 Transform spawnPoint;
                 GameObject spawn = skillMap[k][rand];
+                totalMana += spawn.GetComponent<RoomStats>().mana;
+                if (totalMana < 0) continue;
                 if (spawn.CompareTag("Puzzle"))
                 {
                     pointRand = Random.Range(0, puzzlePoints.Count - 1);
                     spawnPoint = puzzlePoints[pointRand];
+                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawn.transform.rotation); //Rotation Wonky
+                    clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y,spawnPoint.transform.rotation.z, clone.transform.rotation.w);
+                   // clone.transform.Rotate(0,0,spawnPoint.transform.rotation.eulerAngles.z,Space.World);
+                    clone.transform.position = new Vector3(clone.transform.position.x, clone.transform.position.y, travs.transform.position.z);
                     puzzlePoints.RemoveAt(pointRand);
                 }
                 else
                 {
                     pointRand = Random.Range(0, obstaclePoints.Count - 1);
                     spawnPoint = obstaclePoints[pointRand];
+                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position, spawn.transform.rotation); //Rotation Wonky 
+                    clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y, spawnPoint.transform.rotation.z, clone.transform.rotation.w);
+                    //clone.transform.Rotate(0, 0, spawnPoint.transform.rotation.eulerAngles.z, Space.World);
+                    clone.transform.position = new Vector3(clone.transform.position.x, clone.transform.position.y, travs.transform.position.z);
                     obstaclePoints.RemoveAt(pointRand);
                 }
-                skillCount[k] -= 1;
-
+                decrimentTracker[k] += 1;
             }
         }
         
