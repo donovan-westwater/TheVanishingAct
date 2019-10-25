@@ -10,6 +10,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] obstacles;
     public string[] skills; //SHOULD BE THE SAME SIZE OF COUNT
     public int[] count; //SHOULD BE THE SAME SIZE OF SKILLS
+    public int levelSeed;
     List<Transform> puzzlePoints = new List<Transform>();
     List<Transform> obstaclePoints = new List<Transform>();
     int totalMana = 0;
@@ -19,6 +20,7 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
         for(int i = 0;i < count.Length;i++)
         {
             skillCount.Add(skills[i], count[i]);
@@ -88,20 +90,27 @@ public class LevelGenerator : MonoBehaviour
                 {
                     pointRand = Random.Range(0, puzzlePoints.Count - 1);
                     spawnPoint = puzzlePoints[pointRand];
-                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawn.transform.rotation); //Rotation Wonky
-                    clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y,spawnPoint.transform.rotation.z, clone.transform.rotation.w);
-                   // clone.transform.Rotate(0,0,spawnPoint.transform.rotation.eulerAngles.z,Space.World);
-                    clone.transform.position = new Vector3(clone.transform.position.x, clone.transform.position.y, travs.transform.position.z);
+                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawnPoint.transform.rotation,spawnPoint.transform) as GameObject; //Rotation Wonky
+                    //clone.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
+
+                   // clone.transform.root.localEulerAngles = new Vector3(0, 0, spawnPoint.eulerAngles.z); //Consider going through the gameobjects children and having them rotate around the parent's center the same amount
+                    //clone.transform.RotateAround(spawnPoint.position, new Vector3(0, 0, 1), spawn.transform.rotation.eulerAngles.z);
+                    //clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y,spawnPoint.transform.rotation.z, clone.transform.rotation.w);
+                    //clone.transform.root.transform.Rotate(0,0,spawnPoint.transform.rotation.eulerAngles.z,Space.Self);
+                    clone.transform.position = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y, travs.transform.position.z);
                     puzzlePoints.RemoveAt(pointRand);
+                   
                 }
                 else
                 {
                     pointRand = Random.Range(0, obstaclePoints.Count - 1);
                     spawnPoint = obstaclePoints[pointRand];
-                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position, spawn.transform.rotation); //Rotation Wonky 
-                    clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y, spawnPoint.transform.rotation.z, clone.transform.rotation.w);
-                    //clone.transform.Rotate(0, 0, spawnPoint.transform.rotation.eulerAngles.z, Space.World);
-                    clone.transform.position = new Vector3(clone.transform.position.x, clone.transform.position.y, travs.transform.position.z);
+                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawn.transform.rotation) as GameObject; //Rotation Wonky 
+                    
+                    //clone.transform.root.rotation = spawnPoint.rotation;
+                    // clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y, spawnPoint.transform.rotation.z, clone.transform.rotation.w);
+                    //clone.transform.root.transform.Rotate(0, 0, spawnPoint.transform.rotation.eulerAngles.z, Space.Self);
+                    clone.transform.position = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y, travs.transform.position.z);
                     obstaclePoints.RemoveAt(pointRand);
                 }
                 decrimentTracker[k] += 1;
@@ -115,4 +124,5 @@ public class LevelGenerator : MonoBehaviour
     {
         
     }
+    
 }

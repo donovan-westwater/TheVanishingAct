@@ -5,6 +5,14 @@ using Pathfinding;
 
 public class Player_Controls : MonoBehaviour
 {
+
+    /*
+     * Replace the aim code in update with this:
+     * Vector3 pos = Camera.main.WorldToScreenPoint(transform.position); 
+ Vector3 dir = Input.mousePosition - pos; 
+ float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; 
+ transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
+     * */
     public float speed;
     public GameObject aim_sprite;
     public  string[] inventory = new string[3];

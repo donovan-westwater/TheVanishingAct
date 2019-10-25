@@ -14,15 +14,18 @@ public class Wall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         player = GameObject.Find("Player");
         ogPos = transform.position;
         warpDir = player.GetComponent<Player_Controls>().grabSpellAim();
         ogRot = transform.localRotation;
+        */
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         warpDir = player.GetComponent<Player_Controls>().grabSpellAim();
         Vector3 warpAxis = Vector2.Perpendicular(new Vector2(warpDir.x, warpDir.y));
 
@@ -54,14 +57,17 @@ public class Wall : MonoBehaviour
         {
             transform.position = ogPos;
         }
+        */
     }
     //Bullets need to die when they colldie
     private void OnTriggerEnter2D(Collider2D col)
     {
+        /*
         print("Will it hit?");
         if (col.gameObject.CompareTag("pellet"))
         {
             print("Wall: I HAVE BEEN HIT!");
         }
+        */
     }
 }
