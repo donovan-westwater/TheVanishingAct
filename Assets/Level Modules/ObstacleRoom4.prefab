@@ -788,11 +788,11 @@ MonoBehaviour:
   alertWait: 5
   alertTimer: 0
   targets:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4855394701013285555}
+  - {fileID: 8277283409596475462}
+  - {fileID: 3075067561001395772}
+  - {fileID: 5032639679801379327}
+  - {fileID: 4855394701013285555}
 --- !u!1 &4936352757705082364
 GameObject:
   m_ObjectHideFlags: 0

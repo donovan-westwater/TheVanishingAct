@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &162873366484310393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7815128550481281592}
+  - component: {fileID: 3604326608346793052}
+  m_Layer: 0
+  m_Name: LevelGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7815128550481281592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162873366484310393}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.14327341, y: 0.09251676, z: 0}
+  m_LocalScale: {x: 0.0047440957, y: 0.008083337, z: 1}
+  m_Children: []
+  m_Father: {fileID: 800315945268875804}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3604326608346793052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162873366484310393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 788bf080c6bab634b914fe317a0c5c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  traversables:
+  - {fileID: 3224430138641455725, guid: 6eafa7d32d9c3054c9db90581835d6ac, type: 3}
+  - {fileID: 1845216394706482220, guid: 1342702354272cd4baf3a2f90ceaa260, type: 3}
+  puzzles:
+  - {fileID: 9117585719936811476, guid: a22c89a9992bc6347a959c24ba2a4157, type: 3}
+  - {fileID: 4489833664561571784, guid: afb20b4abf5efe34a866d0130c7e969f, type: 3}
+  - {fileID: 4684254270117475096, guid: ad1fc26b8d0939a4291e857b231fff9f, type: 3}
+  - {fileID: 2840862090321291337, guid: c9eab7669bdc0934680b69703ac2bbe2, type: 3}
+  - {fileID: 4385501611398584420, guid: 39814bf62428a844c9399c3da79c599a, type: 3}
+  obstacles:
+  - {fileID: 8442554157456278557, guid: b6e27cec60fdad944bd954746364665d, type: 3}
+  - {fileID: 8970249626772154995, guid: 4fadfd668cc5c3341866abe9d0c4f156, type: 3}
+  - {fileID: 7335696866185035796, guid: bf45bcb4b51a73a4f8ee4b84168abde2, type: 3}
+  - {fileID: 5942341166242939165, guid: 8df6fa2577afab34c9a49f7d641830fa, type: 3}
+  skills:
+  - Teleport
+  - Grab
+  - Move
+  - Patrol
+  - Guard
+  count: 0100000001000000010000000100000001000000
 --- !u!1 &800315945268875806
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +95,7 @@ Transform:
   - {fileID: 800315945486403681}
   - {fileID: 800315946305166790}
   - {fileID: 800315945912246085}
+  - {fileID: 7815128550481281592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

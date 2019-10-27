@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -20,7 +23,18 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        //Load Random state from save here/ Create new Random State ! (check if data is empty)
+        if (GameStorage.Instance.isSaveLoad)
+        {
+            GameObject.Find("Player").transform.position = GameStorage.Instance.playerpos;
+            //Random.state = GameStorage.Instance.levelState;
+            Random.InitState(GameStorage.Instance.levelSeed);
+            GameStorage.Instance.isSaveLoad = false;
+        } else
+        {
+            levelSeed = System.DateTime.Now.Millisecond;
+            Random.InitState(levelSeed);
+        }
         for(int i = 0;i < count.Length;i++)
         {
             skillCount.Add(skills[i], count[i]);
@@ -80,15 +94,17 @@ public class LevelGenerator : MonoBehaviour
             decrimentTracker.Add(k, 0);
             while(skillCount[k] - decrimentTracker[k] > 0)
             {
-                rand = Random.Range(0, skillMap[k].Count-1);
+                rand = Random.Range(0, skillMap[k].Count);
                 int pointRand = 0;
                 Transform spawnPoint;
                 GameObject spawn = skillMap[k][rand];
+                int check = totalMana;
+                check += spawn.GetComponent<RoomStats>().mana;
+                if (check < 0) continue;
                 totalMana += spawn.GetComponent<RoomStats>().mana;
-                if (totalMana < 0) continue;
                 if (spawn.CompareTag("Puzzle"))
                 {
-                    pointRand = Random.Range(0, puzzlePoints.Count - 1);
+                    pointRand = Random.Range(0, puzzlePoints.Count);
                     spawnPoint = puzzlePoints[pointRand];
                     GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawnPoint.transform.rotation,spawnPoint.transform) as GameObject; //Rotation Wonky
                     //clone.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
@@ -103,9 +119,9 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else
                 {
-                    pointRand = Random.Range(0, obstaclePoints.Count - 1);
+                    pointRand = Random.Range(0, obstaclePoints.Count);
                     spawnPoint = obstaclePoints[pointRand];
-                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawn.transform.rotation) as GameObject; //Rotation Wonky 
+                    GameObject clone = Instantiate(spawn, spawnPoint.transform.position,spawnPoint.transform.rotation,spawnPoint.transform) as GameObject; //Rotation Wonky 
                     
                     //clone.transform.root.rotation = spawnPoint.rotation;
                     // clone.transform.localRotation = new Quaternion(clone.transform.rotation.x, clone.transform.rotation.y, spawnPoint.transform.rotation.z, clone.transform.rotation.w);
@@ -122,7 +138,72 @@ public class LevelGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            NewRun();
+        }else if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("I HAVE SAVED");
+            SaveGame();
+        }else if (Input.GetKeyDown(KeyCode.N))
+        {
+            LoadGameAndRestart();
+        }
+    }
+    private Save CreateSaveFile()
+    {
+        Save save = new Save();
+        save.levelSeed = levelSeed;
+        Vector3 vec = GameObject.Find("Player").transform.position;
+        save.playerposX = vec.x;
+        save.playerposY = vec.y;
+        save.playerposZ = vec.z;
+        return save;
+    }
+    public void SaveGame()
+    {
+        Save save = CreateSaveFile();
+        //Writes the file to disk
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+        bf.Serialize(file, save);
+        file.Close();
+
+    }
+    //Load data from save into GameStorage (Global Singleton) and restart
+    public void LoadGameAndRestart()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+            GameStorage.Instance.levelSeed = save.levelSeed;
+            GameStorage.Instance.playerpos = new Vector3(save.playerposX,save.playerposY,save.playerposZ);
+            GameStorage.Instance.isSaveLoad = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    //Load data from save into level (Call at start/ attach to a menu button. This also only a rough framework)[Kinda useless, might delete later]
+    public void LoadGame()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+            GameObject.Find("Player").transform.position = new Vector3(save.playerposX, save.playerposY, save.playerposZ);
+            levelSeed = GameStorage.Instance.levelSeed;
+            
+        }
+    }
+    //restart game with new seed [Exists for testing purposes mainly]
+    public void NewRun()
+    {
+        GameStorage.Instance.isSaveLoad = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         
     }
-    
 }
