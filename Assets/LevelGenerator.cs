@@ -132,7 +132,7 @@ public class LevelGenerator : MonoBehaviour
                 decrimentTracker[k] += 1;
             }
         }
-        
+        AstarPath.active.Scan();
     }
 
     // Update is called once per frame
