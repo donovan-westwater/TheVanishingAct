@@ -70,6 +70,58 @@ public class PerspectiveManager : MonoBehaviour
             }
             
         }
+        //Thought space activation [Need to expand to interactibles as well in terms of color changes]
+        else if (Input.GetKeyDown(KeyCode.J) && !isOn && !whatsOn[1])
+        {
+            isOn = true;
+            whatsOn[1] = true;
+  
+            player.GetComponent<Player_Controls>().setMana(0);
+            GameObject background = GameObject.Find("Background");
+            background.GetComponent<SpriteRenderer>().color = Color.white;
+            GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
+            // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
+            foreach (GameObject go in gameObjectArray)
+            {
+                if(go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = Color.white;
+                if (go.CompareTag("Wall") || go.CompareTag("Glass"))
+                {
+                    go.GetComponent<SpriteRenderer>().color = Color.white;
+                    go.GetComponent<Wall>().setThoughtSpace(true);
+                }
+            }
+            //Call player function here
+            player.GetComponent<Player_Controls>().setThoughtSpace(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.J) && isOn && whatsOn[1])
+        {
+            isOn = false;
+            whatsOn[1] = false;
+
+            player.GetComponent<Player_Controls>().setMana(0);
+            GameObject background = GameObject.Find("Background");
+            background.GetComponent<SpriteRenderer>().color = new Color(255, 154, 6, 255);
+            GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
+            // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
+            foreach (GameObject go in gameObjectArray)
+            {
+                go.GetComponent<Wall>().setThoughtSpace(false);
+                if (go.CompareTag("Wall") || go.CompareTag("Glass"))
+                {
+                    //go.GetComponent<SpriteRenderer>().color = Color.black;
+                    go.GetComponent<Wall>().restoreColor();
+                }
+                if (go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = new Color(147,87,20,255);
+                /*
+                else if (go.CompareTag("Glass"))
+                {
+                    //go.GetComponent<SpriteRenderer>().color = new Color(4,250,235,255);
+                }
+                */
+            }
+            //Call player function here
+            player.GetComponent<Player_Controls>().setThoughtSpace(false);
+        }
     }
     public bool[] shiftActive()
     {

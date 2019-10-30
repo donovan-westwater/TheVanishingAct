@@ -6,7 +6,7 @@ using Pathfinding;
 public class BasicAi : MonoBehaviour
 {
     public Transform playerPosition;
-   
+    private float thoughtRadius = 15;
     private Seeker seeker;
 
     private bool playerVisible = true;
@@ -82,6 +82,30 @@ public class BasicAi : MonoBehaviour
 
         //AstarPath.active.UpdateGraphs(playerB);
         AstarPath.active.UpdateGraphs(aiB);
+        //WIP thoughtspace code
+        //Look into making objects visible by using a physics2d.CircleCastAll
+        if (playerPosition.transform.gameObject.GetComponent<Player_Controls>().getThoughtSpace())
+        {
+            RaycastHit2D[] percievedItems = Physics2D.CircleCastAll(transform.position,thoughtRadius,facing,0.1f); //Checks for colliders around the ai
+            foreach(RaycastHit2D ray in percievedItems)
+            {
+                GameObject go = ray.collider.gameObject;
+                if(go.CompareTag("Wall"))
+                {
+                    go.GetComponent<SpriteRenderer>().color = Color.black;
+                    go.GetComponent<Wall>().addToTimer();
+                }
+                else if (go.CompareTag("Glass"))
+                {
+                    go.GetComponent<SpriteRenderer>().color = Color.cyan;
+                    go.GetComponent<Wall>().addToTimer();
+                }
+            }
+            if(Vector2.Distance(transform.position,playerPosition.position) <= thoughtRadius)
+            {
+                Physics2D.IgnoreLayerCollision(0, 1, false);
+            }
+        }
     }
     public void moveAI(Transform target)
         

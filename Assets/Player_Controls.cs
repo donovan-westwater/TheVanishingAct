@@ -17,6 +17,7 @@ public class Player_Controls : MonoBehaviour
     public GameObject aim_sprite;
     public  string[] inventory = new string[3];
     public GameObject teleStor;
+    public bool[] whatPerspective = new bool[3];
     private Rigidbody2D rb2d;
     private Vector3 movement = new Vector3(0,0,0);
     private float vertical = 0f;
@@ -34,7 +35,10 @@ public class Player_Controls : MonoBehaviour
         angle = Mathf.Acos(Vector3.Dot(startVect, baseDir) / (startVect.magnitude * baseDir.magnitude));
         speed = 10f;
         rb2d = GetComponent<Rigidbody2D>();
-        
+        for (int i = 0; i < 3; i++)
+        {
+            whatPerspective[i] = false;
+        }
 
     }
     public Vector3 grabSpellAim()
@@ -142,6 +146,16 @@ public class Player_Controls : MonoBehaviour
         Debug.DrawLine(transform.position, spell.point, Color.black, 2f);
 
         
+    }
+    public void setThoughtSpace(bool truth)
+    {
+        //Glass is on its own collision layer! find out what it is and add it to this function
+        Physics2D.IgnoreLayerCollision(0, 1, truth);
+        whatPerspective[1] = true;
+    }
+    public bool getThoughtSpace()
+    {
+        return whatPerspective[1];
     }
     public void setMana(int amount)
     {

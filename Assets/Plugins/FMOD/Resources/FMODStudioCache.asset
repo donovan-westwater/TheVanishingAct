@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 114979754858277990}
-  - {fileID: 114044440464971744}
+  - {fileID: 114669202683616552}
   EditorEvents:
   - {fileID: 114004229991639654}
+  - {fileID: 114624916007200012}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 114044440464971744}
+  - {fileID: 114669202683616552}
   StringsBanks:
   - {fileID: 114979754858277990}
-  stringsBankWriteTime: 637077922151923489
+  stringsBankWriteTime: 637077977818518763
   cacheVersion: 3
 --- !u!114 &114004229991639654
 MonoBehaviour:
@@ -39,7 +40,7 @@ MonoBehaviour:
   Path: event:/TestSound
   guid: cd2de3c2259829419b5cc7942b1069f1
   Banks:
-  - {fileID: 114044440464971744}
+  - {fileID: 114669202683616552}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -83,6 +84,101 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &114150202257455096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637077977106518404
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &114304100856397680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637077952745424301
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &114624916007200012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/Footsteps
+  guid: 1da5c5e091d9df43828927d0b689d758
+  Banks:
+  - {fileID: 114669202683616552}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 400
+--- !u!114 &114669202683616552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637077977818389117
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &114744964291285616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637077970986080845
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
 --- !u!114 &114979754858277990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,9 +193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: SoundWork/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637077922151923489
+  lastModified: 637077977818518763
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 734
+    Value: 786
   Exists: 1
