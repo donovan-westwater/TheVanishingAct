@@ -165,4 +165,8 @@ public class Player_Controls : MonoBehaviour
     {
         return mana;
     }
+    public int getInvSize()
+    {
+        return curInvSize;
+    }
 }

@@ -19,7 +19,7 @@ public class ManaPickup : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         int mana = player.GetComponent<Player_Controls>().getMana();
-        if (col.CompareTag("Player") == true)
+        if (col.gameObject.CompareTag("Player") == true)
         {
             mana += 1;
             if(mana > 3)

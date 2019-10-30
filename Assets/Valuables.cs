@@ -18,9 +18,20 @@ public class Valuables : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("pellet"))
+        
+        if (col.gameObject.CompareTag("Player"))
         {
-            print("object: I HAVE BEEN HIT!");
+            
+             int curInvSize = col.gameObject.GetComponent<Player_Controls>().getInvSize() + 1;
+            if (curInvSize < col.gameObject.GetComponent<Player_Controls>().inventory.Length)
+            {
+                col.gameObject.GetComponent<Player_Controls>().addItem("Object", curInvSize - 1);
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                print("Inventory Full!");
+            }
         }
     }
 }

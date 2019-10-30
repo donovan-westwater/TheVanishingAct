@@ -42,7 +42,7 @@ public class PerspectiveManager : MonoBehaviour
             tunnel.SetActive(true);
             tempMana = player.GetComponent<Player_Controls>().getMana();
             player.GetComponent<Player_Controls>().setMana(tempMana - 2);
-            player.GetComponent<Player_Controls>().setMana(0);
+           // player.GetComponent<Player_Controls>().setMana(0);
             GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
             // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in gameObjectArray)
@@ -58,7 +58,7 @@ public class PerspectiveManager : MonoBehaviour
             isOn = false;
             whatsOn[0] = false;
             tunnel.SetActive(false);
-            player.GetComponent<Player_Controls>().setMana(tempMana);
+            //player.GetComponent<Player_Controls>().setMana(tempMana);
             GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
            // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in gameObjectArray)
@@ -70,7 +70,7 @@ public class PerspectiveManager : MonoBehaviour
             }
             
         }
-        //Thought space activation [Need to expand to interactibles as well in terms of color changes]
+        //Thought space activation [Need to expand to interactibles as well in terms of color changes] [check if gameobject is a prefab before changing color!]
         else if (Input.GetKeyDown(KeyCode.J) && !isOn && !whatsOn[1])
         {
             isOn = true;
@@ -98,7 +98,7 @@ public class PerspectiveManager : MonoBehaviour
             isOn = false;
             whatsOn[1] = false;
 
-            player.GetComponent<Player_Controls>().setMana(0);
+            player.GetComponent<Player_Controls>().setMana(3);
             GameObject background = GameObject.Find("Background");
             background.GetComponent<SpriteRenderer>().color = new Color(255, 154, 6, 255);
             GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
@@ -111,7 +111,7 @@ public class PerspectiveManager : MonoBehaviour
                     //go.GetComponent<SpriteRenderer>().color = Color.black;
                     go.GetComponent<Wall>().restoreColor();
                 }
-                if (go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = new Color(147,87,20,255);
+                if (go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = new Color(147,87,20,255); //broekn color
                 /*
                 else if (go.CompareTag("Glass"))
                 {

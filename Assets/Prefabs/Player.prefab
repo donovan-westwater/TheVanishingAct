@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6651746635919635415}
   m_Layer: 1
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,6 +199,7 @@ MonoBehaviour:
   - 
   teleStor: {fileID: 2493668263793789875, guid: e98ab6526a9013d4cbd4ae92006efcdb,
     type: 3}
+  whatPerspective: 000000
   mana: 3
 --- !u!50 &8593069103426729788
 Rigidbody2D:
@@ -233,3 +234,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d61ae3d39e351248b75164a9ef986bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputsound: 
+  walkingSpeed: 0

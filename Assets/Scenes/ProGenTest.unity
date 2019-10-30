@@ -723,6 +723,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuzzleRoom1
       objectReference: {fileID: 0}
+    - target: {fileID: 9117585719936811476, guid: a22c89a9992bc6347a959c24ba2a4157,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8248644352336032836, guid: a22c89a9992bc6347a959c24ba2a4157,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -829,6 +834,11 @@ PrefabInstance:
     - target: {fileID: 8593069103426729785, guid: 6bfc71984117a234ab017f48c954c46a,
         type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593069103426729785, guid: 6bfc71984117a234ab017f48c954c46a,
+        type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8593069103426729791, guid: 6bfc71984117a234ab017f48c954c46a,
@@ -1804,7 +1814,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800315945249653472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.16, y: 0.31, z: 0}
+  m_LocalPosition: {x: -2.16, y: 0.31, z: 1}
   m_LocalScale: {x: 616.0457, y: 411.9891, z: 1}
   m_Children:
   - {fileID: 800315945501759647}
@@ -2268,7 +2278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &800315946293218619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5055,7 +5065,7 @@ PrefabInstance:
     - target: {fileID: 5942341166242939165, guid: 8df6fa2577afab34c9a49f7d641830fa,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6811226580804711565, guid: 8df6fa2577afab34c9a49f7d641830fa,
         type: 3}
@@ -6152,6 +6162,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PuzzleRoom5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385501611398584420, guid: 39814bf62428a844c9399c3da79c599a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4385501611398584423, guid: 39814bf62428a844c9399c3da79c599a,
         type: 3}
@@ -10136,7 +10151,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243488311571991809}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 0.0016232561, y: 0.0024272487, z: 1}
   m_Children: []
   m_Father: {fileID: 800315945249653474}
