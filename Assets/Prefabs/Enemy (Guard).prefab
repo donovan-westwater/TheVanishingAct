@@ -169,6 +169,7 @@ MonoBehaviour:
   alertWait: 5
   alertTimer: 0
   guardLoc: {fileID: 0}
+  wallcheck: 5
 --- !u!1 &8108363582761890732
 GameObject:
   m_ObjectHideFlags: 0

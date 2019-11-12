@@ -283,7 +283,7 @@ public class BasicAi : MonoBehaviour
             print("I cant see player");
             return false;
         }
-        print(Vector2.Angle(facingDir, playerPosition.position));
+        //print(Vector2.Angle(facingDir, playerPosition.position));
         if (playerVisible && Vector2.Angle(facingDir.normalized,(playerPosition.position - this.transform.position).normalized) < 45f && sightLine.collider.name.Equals("Player"))
         {
             print("I CAN SEE YOU, YOU LITTLE MAGE");

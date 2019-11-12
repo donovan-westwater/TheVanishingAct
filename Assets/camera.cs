@@ -38,7 +38,7 @@ public class camera : baseTrigger
             print("I cant see player");
             return false;
         }
-        print(Vector2.Angle(facingDir, playerPosition.position));
+        //print(Vector2.Angle(facingDir, playerPosition.position));
         if (Vector2.Angle(facingDir.normalized, (playerPosition.position - this.transform.position).normalized) < 35f && sightLine.collider.name.Equals("Player"))
         {
             print("THE CAMEERA HAS CAUGHT YOU!");

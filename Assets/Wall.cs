@@ -11,23 +11,31 @@ public class Wall : MonoBehaviour
     private GameObject player;
     private Color main;
     private bool thoughtSpace = false;
-    private int vanishTimer = 0;
+    private double vanishTimer = 0;
     //All of this warp code should go into its own script later!
     // Start is called before the first frame update
     void Start()
     {
-        if (this.CompareTag("Glass")) this.GetComponent<SpriteRenderer>().color = Color.cyan;
-        else this.GetComponent<SpriteRenderer>().color = Color.black;
+        //main = this.GetComponent<SpriteRenderer>().material.color;
+        //if (this.CompareTag("Glass")) this.GetComponent<Renderer>().color = Color.cyan;
+        //else this.GetComponent<SpriteRenderer>().color = Color.black;
+        main = this.GetComponent<SpriteRenderer>().color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        vanishTimer -= 1;
-        if (thoughtSpace && vanishTimer <= 0)
+        vanishTimer -= 1*Time.deltaTime;
+        if ((thoughtSpace && vanishTimer <= 0))
+        {
+            //this.GetComponent<SpriteRenderer>().color = Color.white;
+            this.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else if (Input.GetMouseButton(1))
         {
             this.GetComponent<SpriteRenderer>().color = Color.white;
         }
+        else if (Input.GetMouseButton(0)) restoreColor();
         if(vanishTimer < 0)
         {
             vanishTimer = 0;
@@ -44,7 +52,8 @@ public class Wall : MonoBehaviour
     }
     public void restoreColor()
     {
-        if (this.CompareTag("Glass")) this.GetComponent<SpriteRenderer>().color = Color.cyan;
-        else this.GetComponent<SpriteRenderer>().color = Color.black;
+        //if (this.CompareTag("Glass")) this.GetComponent<SpriteRenderer>().color = Color.cyan;
+        //else this.GetComponent<SpriteRenderer>().color = Color.black;
+        this.GetComponent<SpriteRenderer>().color = main;
     }
 }
