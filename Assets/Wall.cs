@@ -31,11 +31,18 @@ public class Wall : MonoBehaviour
             //this.GetComponent<SpriteRenderer>().color = Color.white;
             this.GetComponent<SpriteRenderer>().color = Color.white;
         }
-        else if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1))
         {
-            this.GetComponent<SpriteRenderer>().color = Color.white;
+            //this.GetComponent<SpriteRenderer>().color = Color.white;
+            vanishTimer = 0;
+            thoughtSpace = true;
         }
-        else if (Input.GetMouseButton(0)) restoreColor();
+        else if (Input.GetMouseButton(0))
+        {
+            addToTimer();
+            restoreColor();
+            //thoughtSpace = false;
+        }
         if(vanishTimer < 0)
         {
             vanishTimer = 0;

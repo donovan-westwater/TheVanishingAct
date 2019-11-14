@@ -83,7 +83,7 @@ public class PerspectiveManager : MonoBehaviour
             // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in gameObjectArray)
             {
-                if(go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = Color.white;
+                //if(go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = Color.white;
                 if (go.CompareTag("Wall") || go.CompareTag("Glass"))
                 {
                     go.GetComponent<SpriteRenderer>().color = Color.white;
@@ -99,8 +99,8 @@ public class PerspectiveManager : MonoBehaviour
             whatsOn[1] = false;
 
             player.GetComponent<Player_Controls>().setMana(3);
-            GameObject background = GameObject.Find("Background");
-            background.GetComponent<SpriteRenderer>().color = new Color(255, 154, 6, 255);
+            //GameObject background = GameObject.Find("Background");
+            //background.GetComponent<SpriteRenderer>().color = new Color(255, 154, 6, 255);
             GameObject[] gameObjectArray = Resources.FindObjectsOfTypeAll<GameObject>();
             // GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in gameObjectArray)
@@ -111,7 +111,7 @@ public class PerspectiveManager : MonoBehaviour
                     //go.GetComponent<SpriteRenderer>().color = Color.black;
                     go.GetComponent<Wall>().restoreColor();
                 }
-                if (go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = new Color(147,87,20,255); //broekn color
+               // if (go.CompareTag("Traversible")) go.GetComponent<SpriteRenderer>().color = new Color(147,87,20,255); //broekn color
                 /*
                 else if (go.CompareTag("Glass"))
                 {
