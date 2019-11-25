@@ -49,9 +49,9 @@ public class DynamicLight2D : MonoBehaviour
                 float distance = Vector2.Distance(ray.point, new Vector2(center.x, center.y));
                 Vector3 localPoint = new Vector3(ray.point.x - center.x, ray.point.y - center.y, center.z);
                 //vertices[i] = new Vector3(ray.point.x,ray.point.y,transform.position.z);
-                Debug.DrawLine(transform.position, ray.point);
-                Vector3 dirTest = new Vector3(ray.point.x - center.x, ray.point.y - center.y, center.z);
-                Debug.DrawLine(transform.position, transform.position + dirTest,Color.red);
+               // Debug.DrawLine(transform.position, ray.point);
+                //Vector3 dirTest = new Vector3(ray.point.x - center.x, ray.point.y - center.y, center.z);
+               // Debug.DrawLine(transform.position, transform.position + dirTest,Color.red);
                 vertices[i] = localPoint;
             }
             else

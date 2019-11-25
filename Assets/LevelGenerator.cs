@@ -148,6 +148,23 @@ public class LevelGenerator : MonoBehaviour
         }else if (Input.GetKeyDown(KeyCode.N))
         {
             LoadGameAndRestart();
+        }else if (!Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SaveGame(1);
+        }
+        else if (!Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SaveGame(2);
+        }
+        else if (!Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SaveGame(3);
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha1)) LoadGameAndRestart(1);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) LoadGameAndRestart(2);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) LoadGameAndRestart(3);
         }
     }
     private Save CreateSaveFile()
@@ -170,6 +187,18 @@ public class LevelGenerator : MonoBehaviour
         file.Close();
 
     }
+    //overaded save function
+    public void SaveGame(int num)
+    {
+        Save save = CreateSaveFile();
+        ScreenCapture.CaptureScreenshot(Application.persistentDataPath + "/gamesave" + num+".png");
+        //Writes the file to disk
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/gamesave"+num+".save");
+        bf.Serialize(file, save);
+        file.Close();
+
+    }
     //Load data from save into GameStorage (Global Singleton) and restart
     public void LoadGameAndRestart()
     {
@@ -181,6 +210,20 @@ public class LevelGenerator : MonoBehaviour
             file.Close();
             GameStorage.Instance.levelSeed = save.levelSeed;
             GameStorage.Instance.playerpos = new Vector3(save.playerposX,save.playerposY,save.playerposZ);
+            GameStorage.Instance.isSaveLoad = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    public void LoadGameAndRestart(int num)
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave" + num + ".save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave" + num + ".save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+            GameStorage.Instance.levelSeed = save.levelSeed;
+            GameStorage.Instance.playerpos = new Vector3(save.playerposX, save.playerposY, save.playerposZ);
             GameStorage.Instance.isSaveLoad = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -197,6 +240,20 @@ public class LevelGenerator : MonoBehaviour
             GameObject.Find("Player").transform.position = new Vector3(save.playerposX, save.playerposY, save.playerposZ);
             levelSeed = GameStorage.Instance.levelSeed;
             
+        }
+    }
+    //overloaded load fucntion
+    public void LoadGame(int num)
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave"+num+".save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave" + num + ".save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+            GameObject.Find("Player").transform.position = new Vector3(save.playerposX, save.playerposY, save.playerposZ);
+            levelSeed = GameStorage.Instance.levelSeed;
+
         }
     }
     //restart game with new seed [Exists for testing purposes mainly]
