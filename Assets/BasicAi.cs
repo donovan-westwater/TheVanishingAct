@@ -330,4 +330,6 @@ public class BasicAi : MonoBehaviour
             player.SetActive(false);
         }
     }
+
 }
+    
