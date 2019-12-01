@@ -14,11 +14,23 @@ public class AIEditor : MonoBehaviour
     {
         editMode = false;
     }
-    // Update is called once per frame
-    private void Update()
+    [MenuItem("GameObject/Add Node to Patrol Path", true,-100)]
+    static bool isPatrol()
     {
-        
+        PatrolAi test = Selection.activeGameObject.GetComponent<PatrolAi>();
+        if (test != null)
+        {
+            return true;
+        }
+        return false;
     }
-
+    [MenuItem("GameObject/Add Node to Patrol Path", false,-100)]
+    static void addNodeToPath()
+    {
+        PatrolAi test = Selection.activeGameObject.GetComponent<PatrolAi>();
+        Transform newSelect = test.addToPath();
+        Selection.activeGameObject = newSelect.gameObject;
+    }
+    
 
 }

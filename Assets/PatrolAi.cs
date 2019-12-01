@@ -140,76 +140,94 @@ public class PatrolAi : BasicAi
             //Attack state goes here! [Attack will no longer be its own state]
             //moveAI(playerPosition);
         }
+       
     }
-       /*
-    void moveAI(Transform target)
+    public Transform addToPath()
     {
-        if (Time.time > lastRepath + repathRate && seeker.IsDone())
+        Transform add = new GameObject().transform;
+        add.position = this.transform.position;
+        add.gameObject.name = "AI PATH"+targets.Length;
+        for(int i = 0;i < targets.Length; i++)
         {
-            lastRepath = Time.time;
-
-            // Start a new path to the playerPosition, call the the OnPathComplete function
-            // when the path has been calculated (which may take a few frames depending on the complexity)
-            seeker.StartPath(transform.position, target.position, OnPathComplete);
+            if (targets[i] != null) continue;
+            targets[i] = add;
+            return add;
         }
-        if (path == null)
-        {
-            // We have no path to follow yet, so don't do anything
-            return;
-        }
-
-        // Check in a loop if we are close enough to the current waypoint to switch to the next one.
-        // We do this in a loop because many waypoints might be close to each other and we may reach
-        // several of them in the same frame.
-        reachedEndOfPath = false;
-        // The distance to the next waypoint in the path
-        float distanceToWaypoint;
-        Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint], Color.red);
-        while (true)
-        {
-            // If you want maximum performance you can check the squared distance instead to get rid of a
-            // square root calculation. But that is outside the scope of this tutorial.
-            distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
-            // print("Current Distance: " + distanceToWaypoint);
-            //print("NextDistnace: " + nextWaypointDistance);
-            if (distanceToWaypoint < nextWaypointDistance)
-            {
-                // Check if there is another waypoint or if we have reached the end of the path
-                if (currentWaypoint + 1 < path.vectorPath.Count)
-                {
-                    currentWaypoint++;
-
-                }
-                else
-                {
-                    // Set a status variable to indicate that the agent has reached the end of the path.
-                    // You can use this to trigger some special code if your game requires that.
-                    reachedEndOfPath = true;
-                    break;
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        // Slow down smoothly upon approaching the end of the path
-        // This value will smoothly go from 1 to 0 as the agent approaches the last waypoint in the path.
-        var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
-
-        // Direction to the next waypoint
-        // Normalize it so that it has a length of 1 world unit
-        Vector2 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-        // Multiply the direction by our desired speed to get a velocity
-        Vector3 velocity = dir * speed * speedFactor;
-
-
-
-        // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
-        //transform.position += velocity * Time.deltaTime;
-        transform.Translate(velocity * Time.deltaTime);
+        Transform[] newArray = new Transform[targets.Length * 2];
+        targets.CopyTo(newArray, 0);
+        newArray[targets.Length] = add;
+        targets = newArray;
+        return add;
     }
-    */
-    
+    /*
+ void moveAI(Transform target)
+ {
+     if (Time.time > lastRepath + repathRate && seeker.IsDone())
+     {
+         lastRepath = Time.time;
+
+         // Start a new path to the playerPosition, call the the OnPathComplete function
+         // when the path has been calculated (which may take a few frames depending on the complexity)
+         seeker.StartPath(transform.position, target.position, OnPathComplete);
+     }
+     if (path == null)
+     {
+         // We have no path to follow yet, so don't do anything
+         return;
+     }
+
+     // Check in a loop if we are close enough to the current waypoint to switch to the next one.
+     // We do this in a loop because many waypoints might be close to each other and we may reach
+     // several of them in the same frame.
+     reachedEndOfPath = false;
+     // The distance to the next waypoint in the path
+     float distanceToWaypoint;
+     Debug.DrawLine(this.transform.position, path.vectorPath[currentWaypoint], Color.red);
+     while (true)
+     {
+         // If you want maximum performance you can check the squared distance instead to get rid of a
+         // square root calculation. But that is outside the scope of this tutorial.
+         distanceToWaypoint = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
+         // print("Current Distance: " + distanceToWaypoint);
+         //print("NextDistnace: " + nextWaypointDistance);
+         if (distanceToWaypoint < nextWaypointDistance)
+         {
+             // Check if there is another waypoint or if we have reached the end of the path
+             if (currentWaypoint + 1 < path.vectorPath.Count)
+             {
+                 currentWaypoint++;
+
+             }
+             else
+             {
+                 // Set a status variable to indicate that the agent has reached the end of the path.
+                 // You can use this to trigger some special code if your game requires that.
+                 reachedEndOfPath = true;
+                 break;
+             }
+         }
+         else
+         {
+             break;
+         }
+     }
+
+     // Slow down smoothly upon approaching the end of the path
+     // This value will smoothly go from 1 to 0 as the agent approaches the last waypoint in the path.
+     var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
+
+     // Direction to the next waypoint
+     // Normalize it so that it has a length of 1 world unit
+     Vector2 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+     // Multiply the direction by our desired speed to get a velocity
+     Vector3 velocity = dir * speed * speedFactor;
+
+
+
+     // If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate
+     //transform.position += velocity * Time.deltaTime;
+     transform.Translate(velocity * Time.deltaTime);
+ }
+ */
+
 }
