@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 153956467169660350}
   - component: {fileID: 153956467169660349}
   - component: {fileID: 153956467169660346}
+  - component: {fileID: 489936149}
   m_Layer: 0
   m_Name: Enemy (Coward)
   m_TagString: enemy
@@ -109,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153956467169660347}
-  m_LocalRotation: {x: -0, y: -0, z: -0.020512216, w: -0.9997896}
+  m_LocalRotation: {x: -0, y: 0, z: -0.020514805, w: -0.99978954}
   m_LocalPosition: {x: 10.199348, y: 0.39353693, z: -1}
   m_LocalScale: {x: 0.149, y: 0.146, z: 1}
   m_Children:
@@ -252,6 +253,18 @@ MonoBehaviour:
   alertTimer: 0
   alertRadis: 0
   searchRadis: 0
+--- !u!114 &489936149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153956467169660347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd599a65990e5b45b8713c4af444c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7484719364095593036
 GameObject:
   m_ObjectHideFlags: 0
