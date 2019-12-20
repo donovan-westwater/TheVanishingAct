@@ -70,7 +70,7 @@ public class PatrolAi : BasicAi
     */
     public void Update()
     {
-        if (Input.GetKey(KeyCode.K)) return;
+        if (Input.GetKey(KeyCode.L)) return;
 
         //print("Distance to target: " + Vector2.Distance(this.transform.position, targets[curIndex].position));
         //Patrol system needs work!

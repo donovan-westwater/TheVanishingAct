@@ -53,21 +53,25 @@ public class PerspectiveManager : MonoBehaviour
             {
                 recordQ = new Queue<ObjectState>();
                 curTar = player.GetComponent<Player_Controls>().getMark();
+                frametimer = 0;
             }
-            ObjectState enqueState = new ObjectState();
-            enqueState.pos = curTar.transform.position;
-            //GameObject mark = player.GetComponent<Player_Controls>().getMark();
-            if (curTar.CompareTag("enemy"))
+            if (!(Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L)))
             {
-                enqueState.facing = curTar.GetComponent<BasicAi>().getAim();
+                ObjectState enqueState = new ObjectState();
+                enqueState.pos = curTar.transform.position;
+                //GameObject mark = player.GetComponent<Player_Controls>().getMark();
+                if (curTar.CompareTag("enemy"))
+                {
+                    enqueState.facing = curTar.GetComponent<BasicAi>().getAim();
+                }
+                if (timeRecordMax < frametimer)
+                {
+                    recordQ.Dequeue();
+                    frametimer -= 1;
+                }
+                recordQ.Enqueue(enqueState);
+                frametimer += 1;
             }
-            if (timeRecordMax < frametimer)
-            {
-                recordQ.Dequeue();
-                frametimer -= 1;
-            }
-            recordQ.Enqueue(enqueState);
-            frametimer += 1;
             //Controls for scrolling through
             //isTraveling = false;
             if ((Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L)) && recordQ.Count > 0)

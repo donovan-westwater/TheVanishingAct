@@ -34,7 +34,7 @@ public class CowardAi : BasicAi
     // Update is called once per frame
      void Update()
     {
-        if (Input.GetKey(KeyCode.K)) return;
+        if (Input.GetKey(KeyCode.L)) return;
         GameObject player = GameObject.Find("Player");
         if (curState == basicStates.watch)
         {
