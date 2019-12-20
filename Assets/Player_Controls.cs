@@ -168,6 +168,7 @@ public class Player_Controls : MonoBehaviour
         {
             recordTar = spell.collider.gameObject;
             isRecord = true;
+            mana -= 1;
         }
         else
         {
