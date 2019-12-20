@@ -27,7 +27,9 @@ public class Player_Controls : MonoBehaviour
     private Vector3 baseDir = new Vector3(1, 0, 0);
     private GameObject recordTar;
     private bool isRecord = false;
-    private bool haveWon = false;
+    //private bool haveWon = false;
+    LineRenderer line;
+    float lineTimer = 0f;
     public int mana = 3; //The max mana the player should have is 3!
     public Text countText;
     public Text winText;
@@ -35,6 +37,10 @@ public class Player_Controls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        line = this.GetComponent<LineRenderer>();
+        line.enabled = false;
+        line.useWorldSpace = true;
+        line.positionCount = 2;
         curInvSize = 0;
         countText.text = "Objects Stolen " + curInvSize;
         winText.text = "";
@@ -118,6 +124,12 @@ public class Player_Controls : MonoBehaviour
         }
         countText.text = "Objects Stolen: "+curInvSize.ToString();
         if (curInvSize >= 3) winText.text = "You have stolen everything!\nYou have won the game!";
+        if(line.enabled) lineTimer += 1 * Time.deltaTime;
+        if(lineTimer > 3f)
+        {
+            lineTimer = 0;
+            line.enabled = false;
+        }
     }
     public string[] getInventory()
     {
@@ -157,7 +169,8 @@ public class Player_Controls : MonoBehaviour
         //   RaycastHit2D hit;
         //print(dir.x + " " + dir.y);
         print(spell.point);
-        Debug.DrawLine(transform.position, spell.point, Color.black, 2f);
+        // Debug.DrawLine(transform.position, spell.point, Color.black, 2f);
+        drawLine(spell.point, Color.black);
 
         
     }
@@ -183,7 +196,17 @@ public class Player_Controls : MonoBehaviour
             recordTar = null;
             isRecord = false;
         }
-        Debug.DrawLine(transform.position, spell.point, Color.black, 3f);
+        //Debug.DrawLine(transform.position, spell.point, Color.black, 3f);
+        drawLine(spell.point, Color.blue);
+    }
+    void drawLine(Vector2 endpoint, Color c)
+    {
+        line.startColor = c;
+        line.endColor = c;
+        //line.SetPositions(null);
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, new Vector3(endpoint.x, endpoint.y, transform.position.z));
+        line.enabled = true;
     }
     public void setThoughtSpace(bool truth)
     {

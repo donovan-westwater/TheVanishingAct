@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8757368767636400812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637124605645370286
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-4048987351948379212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: SoundWork/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637124586588674708
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,16 +50,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 114979754858277990}
-  - {fileID: 114669202683616552}
+  - {fileID: -8757368767636400812}
   EditorEvents:
   - {fileID: 114004229991639654}
   - {fileID: 114624916007200012}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 114669202683616552}
+  - {fileID: -8757368767636400812}
   StringsBanks:
   - {fileID: 114979754858277990}
-  stringsBankWriteTime: 637077977818518763
+  stringsBankWriteTime: 637124605645470008
   cacheVersion: 3
 --- !u!114 &114004229991639654
 MonoBehaviour:
@@ -40,7 +76,7 @@ MonoBehaviour:
   Path: event:/TestSound
   guid: cd2de3c2259829419b5cc7942b1069f1
   Banks:
-  - {fileID: 114669202683616552}
+  - {fileID: -8757368767636400812}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -135,14 +171,14 @@ MonoBehaviour:
   Path: event:/Footsteps
   guid: 1da5c5e091d9df43828927d0b689d758
   Banks:
-  - {fileID: 114669202683616552}
+  - {fileID: -8757368767636400812}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 400
+  Length: 660
 --- !u!114 &114669202683616552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: SoundWork/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637077977818518763
+  lastModified: 637124605645470008
   LoadResult: 0
   FileSizes:
   - Name: Desktop
