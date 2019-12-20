@@ -1,7 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+struct ObjectState
+{
+    public Vector2 pos;
+    public Vector2 facing;
+}
+//Time spell has issues with the rotation of the of the facing, indictor starts to go wildly off base
+//Make feedback for the spell, even if its just a gizmo
 public class PerspectiveManager : MonoBehaviour
 {
     private GameObject player;
@@ -9,6 +15,14 @@ public class PerspectiveManager : MonoBehaviour
     bool isOn = false;
     bool[] whatsOn = new bool[3];
     int tempMana;
+    Queue<ObjectState> recordQ = new Queue<ObjectState>();
+    int timeRecordMax = 100; //50 calls per second so records 500/50 == 10 sec default
+    int frametimer = 0;
+    int timeindx = 0;
+    ObjectState[] timeReel;
+    GameObject curTar;
+    Vector2 watch;
+    //bool isTraveling = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +44,55 @@ public class PerspectiveManager : MonoBehaviour
             }
         }
     }
+    private void FixedUpdate()
+    {
 
+        if (player.GetComponent<Player_Controls>().hasMarked())
+        {
+            if (curTar != player.GetComponent<Player_Controls>().getMark())
+            {
+                recordQ = new Queue<ObjectState>();
+                curTar = player.GetComponent<Player_Controls>().getMark();
+            }
+            ObjectState enqueState = new ObjectState();
+            enqueState.pos = curTar.transform.position;
+            //GameObject mark = player.GetComponent<Player_Controls>().getMark();
+            if (curTar.CompareTag("enemy"))
+            {
+                enqueState.facing = curTar.GetComponent<BasicAi>().getAim();
+            }
+            if (timeRecordMax < frametimer)
+            {
+                recordQ.Dequeue();
+                frametimer -= 1;
+            }
+            recordQ.Enqueue(enqueState);
+            frametimer += 1;
+            //Controls for scrolling through
+            //isTraveling = false;
+            if ((Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L)) && recordQ.Count > 0)
+            {
+                if(recordQ.Count > 0) timeReel = recordQ.ToArray();
+                timeindx = timeReel.Length - 1;
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+
+                //loadState here
+                watch = curTar.GetComponent<BasicAi>().getAim();
+                loadState(timeReel[timeindx]);
+                watch = curTar.GetComponent<BasicAi>().getAim();
+                if (timeindx + 1 < timeReel.Length) timeindx += 1;
+            }
+            else if (Input.GetKey(KeyCode.L))
+            {
+                watch = curTar.GetComponent<BasicAi>().getAim();
+                //loadState here
+                loadState(timeReel[timeindx]);
+                if (timeindx - 1 > 0) timeindx -= 1;
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -70,7 +132,9 @@ public class PerspectiveManager : MonoBehaviour
             }
             
         }
+        
         //Thought space activation [Need to expand to interactibles as well in terms of color changes] [check if gameobject is a prefab before changing color!]
+        /*
         else if (Input.GetKeyDown(KeyCode.J) && !isOn && !whatsOn[1])
         {
             isOn = true;
@@ -117,10 +181,31 @@ public class PerspectiveManager : MonoBehaviour
                 {
                     //go.GetComponent<SpriteRenderer>().color = new Color(4,250,235,255);
                 }
-                */
+               
             }
             //Call player function here
             player.GetComponent<Player_Controls>().setThoughtSpace(false);
+        }
+        */
+
+    }
+    void loadState(ObjectState state)
+    {
+        if (curTar == null) return;
+        curTar.transform.position = new Vector3(state.pos.x, state.pos.y, curTar.transform.position.z);
+        if (state.facing != null)
+        {
+            GameObject aimSprite = curTar.transform.GetChild(0).gameObject;
+            Vector2 curFace = curTar.GetComponent<BasicAi>().getAim();
+            if (Vector3.Cross(curFace.normalized, state.facing).z < 0)
+            {
+                aimSprite.transform.RotateAround(curTar.transform.position, new Vector3(0, 0, 1), -Vector2.Angle(curFace, state.facing)); //-0.1f
+            }
+            else if (Vector3.Cross(curFace, state.facing).z > 0)
+            {
+
+                aimSprite.transform.RotateAround(curTar.transform.position, new Vector3(0, 0, 1), Vector2.Angle(curFace, state.facing));
+            }
         }
     }
     public bool[] shiftActive()

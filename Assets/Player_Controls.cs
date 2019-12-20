@@ -25,6 +25,8 @@ public class Player_Controls : MonoBehaviour
     private float angle;
     private int curInvSize;
     private Vector3 baseDir = new Vector3(1, 0, 0);
+    private GameObject recordTar;
+    private bool isRecord = false;
     public int mana = 3; //The max mana the player should have is 3!
     // Start is called before the first frame update
     void Start()
@@ -104,6 +106,10 @@ public class Player_Controls : MonoBehaviour
             //tele.transform.position = Vector2.MoveTowards(tele.transform.position, aim_sprite.transform.position, 50);
             //tele.GetComponent<Rigidbody2D>().AddForce(100 * (aim_sprite.transform.position - transform.position));
         }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            markTarget();
+        }
     }
     public string[] getInventory()
     {
@@ -147,6 +153,29 @@ public class Player_Controls : MonoBehaviour
 
         
     }
+    public void markTarget()
+    {
+        Vector3 dir = grabSpellAim();
+        RaycastHit2D spell = Physics2D.Raycast(transform.position, dir, 10f);
+        if (!spell)
+        {
+            recordTar = null;
+            isRecord = false;
+            print("I hit nothing");
+            return;
+        }
+        if (!spell.collider.CompareTag("Wall") || !spell.collider.CompareTag("Glass"))
+        {
+            recordTar = spell.collider.gameObject;
+            isRecord = true;
+        }
+        else
+        {
+            recordTar = null;
+            isRecord = false;
+        }
+        Debug.DrawLine(transform.position, spell.point, Color.black, 3f);
+    }
     public void setThoughtSpace(bool truth)
     {
         //Glass is on its own collision layer! find out what it is and add it to this function
@@ -168,5 +197,17 @@ public class Player_Controls : MonoBehaviour
     public int getInvSize()
     {
         return curInvSize;
+    }
+    public bool hasMarked()
+    {
+        return isRecord;
+    }
+    public GameObject getMark()
+    {
+        return recordTar;
+    }
+    public void setMarked(bool tru)
+    {
+        isRecord = tru;
     }
 }

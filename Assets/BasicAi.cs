@@ -64,10 +64,10 @@ public class BasicAi : MonoBehaviour
             p.Release(this);
         }
     }
-/*
+    /*
     public void Update()
     {
-        
+        if (Input.GetKey(KeyCode.K)) return;   
         
        
     }
@@ -305,6 +305,10 @@ public class BasicAi : MonoBehaviour
     public Vector2 getFacing()
     {
         return this.facing;
+    }
+    public Vector2 getAim()
+    {
+        return gameObject.transform.GetChild(0).transform.position - this.transform.position;
     }
     public void setAlert(bool truth)
     {
