@@ -23,9 +23,10 @@ public class Valuables : MonoBehaviour
         {
             
              int curInvSize = col.gameObject.GetComponent<Player_Controls>().getInvSize() + 1;
-            if (curInvSize < col.gameObject.GetComponent<Player_Controls>().inventory.Length)
+            if (curInvSize <= col.gameObject.GetComponent<Player_Controls>().inventory.Length)
             {
                 col.gameObject.GetComponent<Player_Controls>().addItem("Object", curInvSize - 1);
+                col.gameObject.GetComponent<Player_Controls>().setInvSize(curInvSize);
                 this.gameObject.SetActive(false);
             }
             else

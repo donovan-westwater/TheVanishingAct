@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-
+using UnityEngine.UI;
 public class Player_Controls : MonoBehaviour
 {
 
@@ -27,11 +27,17 @@ public class Player_Controls : MonoBehaviour
     private Vector3 baseDir = new Vector3(1, 0, 0);
     private GameObject recordTar;
     private bool isRecord = false;
+    private bool haveWon = false;
     public int mana = 3; //The max mana the player should have is 3!
+    public Text countText;
+    public Text winText;
+    
     // Start is called before the first frame update
     void Start()
     {
         curInvSize = 0;
+        countText.text = "Objects Stolen " + curInvSize;
+        winText.text = "";
         aim_sprite = gameObject.transform.GetChild(0).gameObject;
         Vector3 startVect = new Vector3(aim_sprite.transform.position.x -transform.position.x, aim_sprite.transform.position.y-transform.position.y).normalized;
         angle = Mathf.Acos(Vector3.Dot(startVect, baseDir) / (startVect.magnitude * baseDir.magnitude));
@@ -110,6 +116,8 @@ public class Player_Controls : MonoBehaviour
         {
             markTarget();
         }
+        countText.text = "Objects Stolen: "+curInvSize.ToString();
+        if (curInvSize >= 3) winText.text = "You have stolen everything!\nYou have won the game!";
     }
     public string[] getInventory()
     {
@@ -198,6 +206,10 @@ public class Player_Controls : MonoBehaviour
     public int getInvSize()
     {
         return curInvSize;
+    }
+    public void setInvSize(int x)
+    {
+        curInvSize = x;
     }
     public bool hasMarked()
     {
