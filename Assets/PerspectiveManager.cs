@@ -16,7 +16,7 @@ public class PerspectiveManager : MonoBehaviour
     bool[] whatsOn = new bool[3];
     int tempMana;
     Queue<ObjectState> recordQ = new Queue<ObjectState>();
-    int timeRecordMax = 100; //50 calls per second so records 500/50 == 10 sec default
+    int timeRecordMax = 5000; //50 calls per second so records 500/50 == 10 sec default
     int frametimer = 0;
     int timeindx = 0;
     ObjectState[] timeReel;

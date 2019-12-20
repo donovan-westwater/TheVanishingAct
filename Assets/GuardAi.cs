@@ -53,7 +53,8 @@ public class GuardAi : BasicAi
     // Update is called once per frame
    void Update()
     {
-        if (Input.GetKey(KeyCode.L)) return;
+        GameObject player = GameObject.Find("Player");
+        if (Input.GetKey(KeyCode.L) && player.GetComponent<Player_Controls>().getMark() == this.gameObject) return;
         Vector3 aimDir = gameObject.transform.GetChild(0).position;
         aimDir.z = transform.position.z;
         RaycastHit2D rayDir = Physics2D.Raycast(transform.position, aimDir, wallcheck);
